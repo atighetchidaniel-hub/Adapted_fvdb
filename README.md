@@ -3,7 +3,9 @@
 [![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/abs/2509.24677)
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://windingwind.github.io/neuralpvs/)
 
-Official training and inference code for **NeuralPVS**, a deep learning approach for real-time visibility computation presented at **SIGGRAPH Asia 2025**.
+<img width="2754" height="730" alt="image" src="https://github.com/user-attachments/assets/5ac2c585-05e6-433f-ace2-75b3193f69b3" />
+
+Official training code for **NeuralPVS**, a deep learning approach for real-time visibility computation presented at **SIGGRAPH Asia 2025**.
 
 ## Overview
 
