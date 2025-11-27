@@ -1,0 +1,20 @@
+[tool.ruff]
+# Exclude directories
+exclude = [".venv*", "__pycache__", "build", "dist"]
+
+# Line length
+line-length = 120
+
+[tool.ruff.lint]
+# Ignore specific rules globally
+ignore = [
+    "E741",   # Ambiguous variable name
+    "E731",   # Lambda assignment
+    "E722",   # Bare except
+    "F841",   # Local variable name is assigned to but never used
+]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["E402"]  # Allow late imports in scripts
+"tests/*" = ["F401"]    # Allow unused imports in tests
+"__init__.py" = ["F401"]

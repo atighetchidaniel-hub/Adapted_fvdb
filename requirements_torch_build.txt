@@ -1,0 +1,9 @@
+# Packages that require PyTorch during build (install after PyTorch)
+cupy-cuda12x==13.6.0
+torch-cluster==1.6.3
+torch-geometric==2.6.1
+
+# RTX 5090 compatible spconv wheel (requires PyTorch)
+https://github.com/MrForExample/Comfy3D_Pre_Builds/raw/main/_Build_Wheels/_Wheels_linux_py312_torch2.7.0_cu128/spconv_cu126-2.3.8-cp312-cp312-manylinux_2_28_x86_64.whl; sys_platform == "linux"
+https://github.com/MrForExample/Comfy3D_Pre_Builds/raw/main/_Build_Wheels/_Wheels_win_py312_torch2.7.0_cu128/spconv-2.3.8-cp312-cp312-win_amd64.whl; sys_platform == "win32"
+
