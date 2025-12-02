@@ -7,6 +7,8 @@
 
 Official training code for **NeuralPVS**, a deep learning approach for real-time visibility computation presented at **SIGGRAPH Asia 2025**.
 
+The code for scene generation and rendering can be found under: https://github.com/DerThomy/NeuralPVS
+
 ## Overview
 
 NeuralPVS is the first deep-learning approach for visibility computation that efficiently determines from-region visibility in large scenes, running at ~100 Hz with less than 1% missing geometry. The network operates on a voxelized (froxelized) representation of the scene and combines sparse convolution with 3D volume-preserving interleaving for data compression.
