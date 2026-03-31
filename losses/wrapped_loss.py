@@ -1,5 +1,9 @@
 import torch
-import spconv.pytorch as spconv
+
+try:
+    import spconv.pytorch as spconv
+except Exception:
+    spconv = None
 
 from utils.tensor import to_dense
 
@@ -9,7 +13,7 @@ def get_loss_module(loss_type: torch.nn.Module) -> torch.nn.Module:
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
-        def forward(self, input: torch.Tensor | spconv.SparseConvTensor, target: torch.Tensor, data: dict = {}) -> torch.Tensor:
+        def forward(self, input, target: torch.Tensor, data: dict = {}) -> torch.Tensor:
             """
             Args:
                 input (Tensor): Input tensor of shape (B, C, H, W, Z).

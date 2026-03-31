@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
-import spconv.pytorch as spconv
 
+try:
+    import spconv.pytorch as spconv
+except Exception:
+    spconv = None
 # --------------------------
 # Dense Functions
 # --------------------------
@@ -308,12 +311,15 @@ def deinterleaving_fn(x: torch.Tensor, r: int) -> torch.Tensor:
 #     return interleave_ext.deinterleaving(x, r)
 
 
-def sparse_interleaving_fn(x: spconv.SparseConvTensor, r: int, use_cuda: bool = False) -> spconv.SparseConvTensor:
+def sparse_interleaving_fn(x, r: int, use_cuda: bool = False):
     """
     Rearranges a sparse 5D tensor of shape (B, C, H, W, Z) into
     (B, C * r^3, H//r, W//r, Z//r) by interleaving the r^3 neighborhood
     along the channel dimension via a fused CUDA kernel.
     """
+    if spconv is None:
+        raise ImportError("sparse_interleaving_fn requires spconv, but spconv is not installed.")
+
     if isinstance(x, spconv.SparseConvTensor):
         coords = x.indices        # (N, 4): [batch, h, w, z]
         feats = x.features        # (N, C)
@@ -375,7 +381,7 @@ def sparse_interleaving_fn(x: spconv.SparseConvTensor, r: int, use_cuda: bool = 
                                    batch_size=x.batch_size)
 
 
-def sparse_deinterleaving_fn(x: spconv.SparseConvTensor, r: int, prune_zeros: bool = False) -> spconv.SparseConvTensor:
+def sparse_deinterleaving_fn(x, r: int, prune_zeros: bool = False):
     """
     Reverses the interleaving operation: rearranges a sparsed 5D tensor of shape 
     (B, C * r^3, H, W, Z) back into (B, C, H*r, W*r, Z*r).
@@ -397,6 +403,9 @@ def sparse_deinterleaving_fn(x: spconv.SparseConvTensor, r: int, prune_zeros: bo
              offset_z = i % r
     The output is a SparseTensor with coordinates of shape (M * r^3, 4) and features of shape (M * r^3, C).
     """
+    if spconv is None:
+        raise ImportError("sparse_deinterleaving_fn requires spconv, but spconv is not installed.")
+
     # Get the aggregated coordinates and features.
     # shape: (M, 4), where columns: [batch, base_x, base_y, base_z]
     if isinstance(x, spconv.SparseConvTensor):
@@ -471,7 +480,7 @@ class Interleaver(nn.Module):
         self.use_cuda = use_cuda
 
     def forward(self, x):
-        if isinstance(x, spconv.SparseConvTensor):
+        if spconv is not None and isinstance(x, spconv.SparseConvTensor):
             return sparse_interleaving_fn(x, self.r, self.use_cuda)
         elif isinstance(x, torch.Tensor):
             if self.use_cuda:
@@ -482,7 +491,6 @@ class Interleaver(nn.Module):
         else:
             raise TypeError(
                 "Input must be either a torch.Tensor or a spconv.SparseConvTensor.")
-
 
 class Deinterleaver(nn.Module):
     """
@@ -498,7 +506,7 @@ class Deinterleaver(nn.Module):
         self.use_cuda = use_cuda
 
     def forward(self, x):
-        if isinstance(x, spconv.SparseConvTensor):
+        if spconv is not None and isinstance(x, spconv.SparseConvTensor):
             return sparse_deinterleaving_fn(x, self.r, self.prune_zeros)
         elif isinstance(x, torch.Tensor):
             if self.use_cuda:

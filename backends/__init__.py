@@ -1,7 +1,13 @@
 from .torchnn import TorchNN
-from .spconv import Spconv
+
+try:
+    from .spconv import Spconv
+except Exception:
+    Spconv = None
 
 backends = {
     'torchnn': TorchNN,
-    'spconv': Spconv,
 }
+
+if Spconv is not None:
+    backends['spconv'] = Spconv

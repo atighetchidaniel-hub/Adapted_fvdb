@@ -1,6 +1,10 @@
 import torch
 from torch import nn
-import spconv.pytorch as spconv
+
+try:
+    import spconv.pytorch as spconv
+except Exception:
+    spconv = None
 
 from utils.tensor import flatten, expand_as_one_hot, to_dense
 
@@ -178,7 +182,10 @@ class SparseWeightedDiceLoss(nn.Module):
         self._dense_dice = WeightedDiceLoss(
             classes=classes, skip_index_after=skip_index_after, weight=weight, sigmoid_normalization=sigmoid_normalization, alpha=alpha, debug=debug)
 
-    def dice(self, input: spconv.SparseConvTensor, target: torch.Tensor, weight: float | None = None) -> torch.Tensor:
+    def dice(self, input, target: torch.Tensor, weight: float | None = None) -> torch.Tensor:
+        if spconv is None:
+            raise ImportError("SparseWeightedDiceLoss requires spconv, but spconv is not installed.")
+
         epsilon = 1e-6
         # Extract coordinates from input SparseConvTensor
         coords = input.indices  # Shape: (N, 4) where columns are [batch, x, y, z]
@@ -236,7 +243,7 @@ class SparseWeightedDiceLoss(nn.Module):
         """
         Expand to one hot added extra for consistency reasons
         """
-        if not isinstance(input, spconv.SparseConvTensor):
+        if spconv is None or not isinstance(input, spconv.SparseConvTensor):
             # Fallback to dense Dice loss for dense inputs (e.g., during evaluation)
             return self._dense_dice(input, target, data)
         

@@ -1,6 +1,10 @@
 import torch
 from torch import nn
-import spconv.pytorch as spconv
+
+try:
+    import spconv.pytorch as spconv
+except Exception:
+    spconv = None
 
 from utils.tensor import flatten, expand_as_one_hot, to_dense
 from utils.train import extract_data
@@ -55,7 +59,7 @@ class Metrics(nn.Module):
         assert index >= 2
         return target[:, 0:index, ...]
 
-    def forward(self, input: torch.Tensor | spconv.SparseConvTensor, target: torch.Tensor, data = {}) -> dict:
+    def forward(self, input, target: torch.Tensor, data = {}) -> dict:
         input = to_dense(input, target.shape)
 
         # Expand to one hot added extra for consistency reasons

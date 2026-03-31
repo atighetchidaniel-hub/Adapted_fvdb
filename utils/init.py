@@ -2,7 +2,11 @@ import torch
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader
-import spconv
+
+try:
+    import spconv
+except Exception:
+    spconv = None
 
 from losses.dice import SparseWeightedDiceLoss, WeightedDiceLoss
 from losses.sum import WeightedSumLoss
@@ -11,7 +15,6 @@ from losses.metrics import Metrics
 from losses.no_guess import NoGuessLoss
 from losses.wrapped_loss import get_loss_module
 from utils.train import count_params
-from models.oacnn import OACNNsInterleaved, OACNNs
 from models.vnet import VNet, VNetInterleaved, VNetLighter, VNetLight
 from modules.dataset import PVSVoxelDataset
 
@@ -30,8 +33,9 @@ def init_cuda(cuda: bool, cupy: bool, seed: int, inference: bool = False):
     if cupy:
         torch.multiprocessing.set_start_method('spawn')
 
-    spconv.constants.SPCONV_ALLOW_TF32 = True
-    spconv.constants.SPCONV_CPP_GEMM = True
+    if spconv is not None:
+        spconv.constants.SPCONV_ALLOW_TF32 = True
+        spconv.constants.SPCONV_CPP_GEMM = True
 
 
 def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
@@ -49,9 +53,15 @@ def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
         model = VNetInterleaved(elu=False, in_channels=in_channels,
                                 classes=classes, backend_type=backend_type, r=args.interleaver_r if args else 2)
     elif model_type == 'OACNNs':
+        if spconv is None:
+            raise ImportError("OACNNs requires spconv, but spconv is not installed.")
+        from models.oacnn import OACNNs
         model = OACNNs(in_channels=in_channels, classes=classes,
                        backend_type=backend_type, depth=model_depth)
     elif model_type == 'OACNNsInterleaved':
+        if spconv is None:
+            raise ImportError("OACNNsInterleaved requires spconv, but spconv is not installed.")
+        from models.oacnn import OACNNsInterleaved
         model = OACNNsInterleaved(
             depth=model_depth, r=args.interleaver_r if args else 2)
     else:
