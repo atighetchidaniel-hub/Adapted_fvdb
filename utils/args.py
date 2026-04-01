@@ -41,7 +41,7 @@ def get_train_arguments():
     # Model arguments
     parser.add_argument('--model', type=str, default='VNet')
     parser.add_argument('--backend', type=str, default='torchnn',
-                        choices=('torchnn', 'spconv'))
+                        choices=('torchnn', 'spconv', 'fvdb'))
     parser.add_argument('--classes', type=int, default=1)
     parser.add_argument('--inModalities', type=int, default=1)
     parser.add_argument('--inChannels', type=int, default=1)
