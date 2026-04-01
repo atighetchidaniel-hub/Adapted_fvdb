@@ -1,6 +1,7 @@
 # utils/tensor.py  (TEST-READY: spconv optional + fvdb optional + fvdb to_sparse added)
 import torch
 import torch.nn.functional as F
+from dataclasses import dataclass
 from typing import Literal, Any
 
 # ---- optional spconv import (so fvdb-only env can import this file) ----
@@ -11,11 +12,18 @@ except Exception:
 
 # ---- optional fvdb import (so spconv-only env can import this file) ----
 try:
-    import fvdb.nn as fvnn
-    from fvdb.nn import VDBTensor
+    import fvdb
 except Exception:
-    fvnn = None
-    VDBTensor = None
+    fvdb = None
+
+
+@dataclass
+class FvdbTensor:
+    grid: Any
+    data: Any
+
+    def replace_data(self, new_data):
+        return FvdbTensor(self.grid, new_data)
 
 
 def blur_tensor(input_tensor, epsilon=1e-10, noise_rate=0.3, sparse=False, backend: Literal["spconv", "fvdb"] = "spconv"):
@@ -172,16 +180,37 @@ def dense_to_oacnns_input(dense_input):
 
 def dense_to_fvdb(dense_tensor: torch.Tensor, voxel_sizes=(1.0, 1.0, 1.0)):
     """
-    Converts dense [B, C, H, W, Z] into fvdb VDBTensor.
+    Converts dense [B, C, H, W, Z] into a sparse fvdb representation.
 
-    fvdb commonly expects channels-last dense: [B, D, H, W, C]
-    We map Z -> D:
-      [B, C, H, W, Z] -> [B, Z, H, W, C]
+    Returns:
+        FvdbTensor(grid=GridBatch, data=JaggedTensor)
     """
-    if fvnn is None:
+    if fvdb is None:
         raise ImportError("fvdb is not installed but dense_to_fvdb was called.")
-    dense_ch_last = dense_tensor.permute(0, 4, 2, 3, 1).contiguous()  # [B, Z, H, W, C]
-    return fvnn.vdbtensor_from_dense(dense_ch_last, voxel_sizes=list(voxel_sizes))
+
+    B, C, H, W, Z = dense_tensor.shape
+    device = dense_tensor.device
+
+    active_mask = torch.any(dense_tensor != 0, dim=1)
+
+    ijk_list = []
+    for b in range(B):
+        coords = torch.nonzero(active_mask[b], as_tuple=False).to(device=device, dtype=torch.int32)
+        if coords.numel() == 0:
+            coords = torch.zeros((0, 3), device=device, dtype=torch.int32)
+        ijk_list.append(coords)
+
+    ijk = fvdb.JaggedTensor.from_list_of_tensors(ijk_list)
+    grid = fvdb.GridBatch.from_ijk(
+        ijk=ijk,
+        voxel_sizes=voxel_sizes,
+        origins=[0.0, 0.0, 0.0],
+        device=device,
+    )
+
+    data = grid.inject_from_dense_cmajor(dense_tensor)
+
+    return FvdbTensor(grid=grid, data=data)
 
 
 def to_sparse(
@@ -190,12 +219,12 @@ def to_sparse(
     dtype=None,
     coords=None,
     voxel_sizes=(1.0, 1.0, 1.0),
-) -> torch.Tensor:
+) -> Any:
     """
     Prepare tensor for backend:
       - torchnn: dense torch.Tensor
       - spconv: spconv.SparseConvTensor
-      - fvdb: fvdb.nn.VDBTensor
+      - fvdb: local FvdbTensor wrapper
     """
     if dtype is not None:
         tensor = tensor.to(dtype)
@@ -214,7 +243,7 @@ def to_dense(tensor, shape: torch.Size = None) -> torch.Tensor:
     """
     Convert backend tensor to dense torch.Tensor.
       - spconv: .dense()
-      - fvdb: .to_dense() then permute back to [B, C, H, W, Z]
+      - fvdb: grid.inject_to_dense_cmajor(data)
     """
     if isinstance(tensor, torch.Tensor):
         return tensor
@@ -222,9 +251,14 @@ def to_dense(tensor, shape: torch.Size = None) -> torch.Tensor:
     if spconv is not None and isinstance(tensor, spconv.SparseConvTensor):
         return tensor.dense()
 
-    if VDBTensor is not None and isinstance(tensor, VDBTensor):
-        dense_ch_last = tensor.to_dense()                 # [B, D, H, W, C]
-        dense = dense_ch_last.permute(0, 4, 2, 3, 1).contiguous()  # [B, C, H, W, Z]
+    if isinstance(tensor, FvdbTensor):
+        min_coord = [0, 0, 0] if shape is not None else None
+        grid_size = list(shape[2:]) if shape is not None else None
+        dense = tensor.grid.inject_to_dense_cmajor(
+            tensor.data,
+            min_coord=min_coord,
+            grid_size=grid_size,
+        )
         if shape is not None and dense.shape != shape:
             raise ValueError(f"fvdb to_dense produced {dense.shape}, expected {shape}")
         return dense
@@ -239,9 +273,8 @@ def to_dtype(tensor, dtype: torch.dtype) -> torch.Tensor:
     if spconv is not None and isinstance(tensor, spconv.SparseConvTensor):
         return tensor.replace_feature(tensor.features.to(dtype))
 
-    if VDBTensor is not None and isinstance(tensor, VDBTensor):
-        # Rebuild VDBTensor with cast jagged data
-        return VDBTensor(tensor.grid, tensor.data.to(dtype))
+    if isinstance(tensor, FvdbTensor):
+        return tensor.replace_data(tensor.data.to(dtype))
 
     raise TypeError(f"Unsupported tensor type: {type(tensor)}")
 
@@ -255,7 +288,7 @@ def requires_grad(tensor, requires_grad: bool = True):
         tensor.features.requires_grad_(requires_grad)
         return tensor
 
-    if VDBTensor is not None and isinstance(tensor, VDBTensor):
+    if isinstance(tensor, FvdbTensor):
         tensor.data.requires_grad_(requires_grad)
         return tensor
 
@@ -269,7 +302,7 @@ def get_dtype(tensor) -> torch.dtype:
     if spconv is not None and isinstance(tensor, spconv.SparseConvTensor):
         return tensor.features.dtype
 
-    if VDBTensor is not None and isinstance(tensor, VDBTensor):
+    if isinstance(tensor, FvdbTensor):
         return tensor.data.dtype
 
     raise TypeError(f"Unsupported tensor type: {type(tensor)}")
