@@ -195,9 +195,11 @@ def dense_to_fvdb(dense_tensor: torch.Tensor, voxel_sizes=(1.0, 1.0, 1.0)):
 
     ijk_list = []
     for b in range(B):
-        coords = torch.nonzero(active_mask[b], as_tuple=False).to(device=device, dtype=torch.int32)
+        coords = torch.nonzero(active_mask[b], as_tuple=False).to(
+            device=device, dtype=torch.int32
+        ).contiguous()
         if coords.numel() == 0:
-            coords = torch.zeros((0, 3), device=device, dtype=torch.int32)
+            coords = torch.zeros((0, 3), device=device, dtype=torch.int32).contiguous()
         ijk_list.append(coords)
 
     ijk = fvdb.JaggedTensor.from_list_of_tensors(ijk_list)
