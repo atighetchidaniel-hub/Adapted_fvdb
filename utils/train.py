@@ -1,7 +1,12 @@
 from collections import OrderedDict
 import os
 import gzip
-import cupy as cp
+
+try:
+    import cupy as cp
+except Exception:
+    cp = None
+
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
@@ -35,7 +40,7 @@ def reproducibility(args, seed):
     cudnn.benchmark = True
 
 
-def save_volume(volume: cp.ndarray | np.ndarray, path):
+def save_volume(volume, path):
     packed_data = np.packbits(volume.flatten())
     packed_data = packed_data.view(np.uint32)
     packed_data = packed_data.byteswap()
