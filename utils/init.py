@@ -53,16 +53,17 @@ def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
         model = VNetInterleaved(elu=False, in_channels=in_channels,
                                 classes=classes, backend_type=backend_type, r=args.interleaver_r if args else 2)
     elif model_type == 'OACNNs':
-        if spconv is None:
-            raise ImportError("OACNNs requires spconv, but spconv is not installed.")
+        if backend_type == 'spconv' and spconv is None:
+            raise ImportError("OACNNs with spconv backend requires spconv, but spconv is not installed.")
         from models.oacnn import OACNNs
         model = OACNNs(in_channels=in_channels, classes=classes,
                        backend_type=backend_type, depth=model_depth)
     elif model_type == 'OACNNsInterleaved':
-        if spconv is None:
-            raise ImportError("OACNNsInterleaved requires spconv, but spconv is not installed.")
+        if backend_type == 'spconv' and spconv is None:
+            raise ImportError("OACNNsInterleaved with spconv backend requires spconv, but spconv is not installed.")
         from models.oacnn import OACNNsInterleaved
         model = OACNNsInterleaved(
+            in_channels=in_channels, classes=classes, backend_type=backend_type,
             depth=model_depth, r=args.interleaver_r if args else 2)
     else:
         raise ValueError('Model not supported')
@@ -84,9 +85,9 @@ def init_loss(loss_type: str | list[str] = 'dice', backend_type: str = 'torchnn'
             return [init_loss(l, backend_type, classes, args) for l in loss_type]
     if loss_type == 'dice':
         alpha = args.dice_alpha if args else 0.1
-        if backend_type == 'spconv':
+        if backend_type in ('spconv', 'fvdb'):
             criterion = SparseWeightedDiceLoss(classes=classes, alpha=alpha)
-        else:  # torchnn backend
+        else:
             criterion = WeightedDiceLoss(classes=classes, alpha=alpha)
     elif loss_type == 'focal':
         criterion = FocalLoss()

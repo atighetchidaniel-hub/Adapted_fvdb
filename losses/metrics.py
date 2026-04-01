@@ -89,7 +89,10 @@ class Metrics(nn.Module):
 
         metrics = self.false_positive_negative(input, target, data)
 
-        metrics['gv_ratio'] = (input > self.threshold).sum() / gv.sum()
+        if gv is not None:
+            metrics['gv_ratio'] = (input > self.threshold).sum() / gv.sum()
+        else:
+            metrics['gv_ratio'] = torch.tensor(-1.0, device=input.device)
         # Each metric should be converted to numpy array
         for key in metrics.keys():
             metrics[key] = metrics[key].detach().cpu().numpy()

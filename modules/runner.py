@@ -232,21 +232,21 @@ class Runner:
                 # Skip the first batch to avoid warmup time
                 continue
             computed = True
-            # input_tensor = to_sparse(input_tensor, self.args.backend)
-            requires_grad(input_tensor, False)
+            benchmark_input = to_sparse(input_tensor, self.args.backend)
+            requires_grad(benchmark_input, False)
             metrics = {}
 
             # Benchmark inference time
             metrics.update(self._benchmark_time(
-                self.model, input_tensor))
+                self.model, benchmark_input))
 
             # Benchmark interleaver/deinterleaver/shapecriptor and exclude from total time
             if hasattr(self.model, 'interleaver'):
                 excluded_time = 0.
 
                 interleave_time = self._benchmark_time(
-                    self.model.interleaver, input_tensor)
-                interleaved = self.model.interleaver(input_tensor)
+                    self.model.interleaver, benchmark_input)
+                interleaved = self.model.interleaver(benchmark_input)
                 metrics['interleaver_time_mean'] = interleave_time["infer_time_mean"]
                 excluded_time += interleave_time["infer_time_mean"]
 
@@ -268,7 +268,7 @@ class Runner:
 
             # Benchmark memory usage
             metrics.update(self._benchmark_memory(
-                self.model, input_tensor))
+                self.model, benchmark_input))
             
             # Get number of parameters
             metrics.update(self._get_num_params())

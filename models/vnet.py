@@ -60,16 +60,17 @@ class VNet(torch.nn.Module):
         return out
 
     def test(self, device='cpu'):
-        input_tensor = torch.rand(1, self.in_channels, 32, 32, 32)
-        ideal_out = torch.rand(1, self.classes, 32, 32, 32)
-        out = self.forward(input_tensor)
+        from utils.tensor import to_dense, to_sparse
+
+        input_tensor = torch.rand(1, self.in_channels, 32, 32, 32, device=device)
+        ideal_out = torch.rand(1, self.classes, 32, 32, 32, device=device)
+        model_input = to_sparse(input_tensor, self.backend_type) if self.backend_type != 'torchnn' else input_tensor
+        out = self.forward(model_input)
+        out = to_dense(out, ideal_out.shape)
         assert ideal_out.shape == out.shape
-        if summary is not None:
-            if summary is not None:
-                summary(self.to(torch.device(device)),
-                        (self.in_channels, 32, 32, 32), device=device)
-        # import torchsummaryX
-        # torchsummaryX.summary(self, input_tensor.to(device))
+        if summary is not None and self.backend_type == 'torchnn':
+            summary(self.to(torch.device(device)),
+                    (self.in_channels, 32, 32, 32), device=device)
         print("Vnet test is complete")
 
 
@@ -204,22 +205,16 @@ class VNetLight(torch.nn.Module):
         return out
 
     def test(self, device='cpu'):
-        if self.backend_type == 'spconv':
-            # Test with spconv backend
-            input_tensor = torch.rand(1, self.in_channels, 32, 32, 32)
-            from utils.tensor import dense_to_spconv
-            input_sparse = dense_to_spconv(input_tensor)
-            out = self.forward(input_sparse)
-            # spconv output is also sparse, check features shape
-            assert out.features.shape[1] == self.classes
-            print("VNet spconv test is complete")
-        elif self.backend_type == 'torchnn':
-            input_tensor = torch.rand(1, self.in_channels, 32, 32, 32)
-            ideal_out = torch.rand(1, self.classes, 32, 32, 32)
-            out = self.forward(input_tensor)
-            assert ideal_out.shape == out.shape
-            if summary is not None:
-                summary(self.to(torch.device(device)),
-                        (self.in_channels, 32, 32, 32), device=device)
+        from utils.tensor import to_dense, to_sparse
+
+        input_tensor = torch.rand(1, self.in_channels, 32, 32, 32, device=device)
+        ideal_out = torch.rand(1, self.classes, 32, 32, 32, device=device)
+        model_input = to_sparse(input_tensor, self.backend_type) if self.backend_type != 'torchnn' else input_tensor
+        out = self.forward(model_input)
+        out = to_dense(out, ideal_out.shape)
+        assert ideal_out.shape == out.shape
+        if summary is not None and self.backend_type == 'torchnn':
+            summary(self.to(torch.device(device)),
+                    (self.in_channels, 32, 32, 32), device=device)
 
         print("Vnet light test is complete")

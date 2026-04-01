@@ -23,6 +23,10 @@ class FvdbTensor:
     data: Any
 
     def replace_data(self, new_data):
+        if fvdb is not None and isinstance(new_data, fvdb.JaggedTensor):
+            return FvdbTensor(self.grid, new_data)
+        if isinstance(new_data, torch.Tensor):
+            return FvdbTensor(self.grid, self.grid.jagged_like(new_data.contiguous()))
         return FvdbTensor(self.grid, new_data)
 
 
@@ -58,17 +62,23 @@ def blur_tensor(input_tensor, epsilon=1e-10, noise_rate=0.3, sparse=False, backe
 
 def calculate_sparsity(sparse_tensor, original_size=256):
     """
-    Compute effective sparsity ratio.
-    Works for spconv tensors if spconv is installed.
+    Compute effective sparsity ratio for supported sparse tensor types.
     """
+    stride = 1
+    current_size = original_size // stride
+
     if spconv is not None and isinstance(sparse_tensor, spconv.SparseConvTensor):
-        stride = 1
-        current_size = original_size // stride
-        total_voxels = current_size ** 3
+        total_voxels = sparse_tensor.batch_size * (current_size ** 3)
         active_voxels = len(sparse_tensor.indices)
         return 1 - (active_voxels / total_voxels)
-    else:
-        raise TypeError(f"Unsupported tensor type for calculate_sparsity: {type(sparse_tensor)}")
+
+    if isinstance(sparse_tensor, FvdbTensor):
+        batch_size = int(sparse_tensor.grid.grid_count) if hasattr(sparse_tensor.grid, 'grid_count') else 1
+        total_voxels = batch_size * (current_size ** 3)
+        active_voxels = int(sparse_tensor.data.jdata.shape[0])
+        return 1 - (active_voxels / total_voxels)
+
+    raise TypeError(f"Unsupported tensor type for calculate_sparsity: {type(sparse_tensor)}")
 
 
 def expand_as_one_hot(input, C, ignore_index=None):
@@ -169,7 +179,8 @@ def dense_to_oacnns_input(dense_input):
     flat_feats = flat_feats[valid_mask]
     flat_batch = flat_batch[valid_mask]
 
-    offset = flat_batch
+    counts = torch.bincount(flat_batch, minlength=B)
+    offset = torch.cumsum(counts, dim=0).long()
 
     return {
         "grid_coord": flat_coords,
