@@ -66,6 +66,17 @@ class SparseDropout(nn.Dropout):
         return super().forward(input)
 
 
+class SparseLinear(nn.Module):
+    """Pointwise channel mixer for FvdbTensor features."""
+
+    def __init__(self, in_channels: int, out_channels: int, bias: bool = True):
+        super().__init__()
+        self.linear = nn.Linear(in_channels, out_channels, bias=bias)
+
+    def forward(self, x: FvdbTensor) -> FvdbTensor:
+        return _replace_data(x, self.linear(x.data.jdata))
+
+
 def ELUCons(elu: bool, nchan: int) -> nn.Module:
     if elu:
         return SparseELU(inplace=True)
@@ -125,7 +136,7 @@ class DownTransition(nn.Module):
     def __init__(self, inChans: int, nConvs: int, elu: bool, dropout: bool = False):
         super().__init__()
         outChans = 2 * inChans
-        self.down_conv = fvnn.SparseConv3d(inChans, outChans, kernel_size=2, stride=2, bias=True)
+        self.channel_fan_out = SparseLinear(inChans, outChans, bias=True)
         self.bn1 = fvnn.BatchNorm(outChans)
         self.relu1 = ELUCons(elu, outChans)
         self.do1 = SparseDropout(p=0.5) if dropout else nn.Identity()
@@ -134,11 +145,12 @@ class DownTransition(nn.Module):
 
     def forward(self, x: FvdbTensor) -> FvdbTensor:
         coarse_grid = x.grid.coarsened_grid(2)
-        plan = _plan(x.grid, coarse_grid, kernel_size=2, stride=2)
+        pooled_data, coarse_grid = x.grid.max_pool(pool_factor=2, data=x.data, coarse_grid=coarse_grid)
 
-        down = self.down_conv(x.data, plan)
-        down = self.bn1(down, coarse_grid)
-        down = self.relu1(FvdbTensor(coarse_grid, down))
+        down = FvdbTensor(coarse_grid, pooled_data)
+        down = self.channel_fan_out(down)
+        down = FvdbTensor(coarse_grid, self.bn1(down.data, coarse_grid))
+        down = self.relu1(down)
 
         out = self.do1(down)
         out = self.ops(out)
@@ -149,9 +161,7 @@ class DownTransition(nn.Module):
 class UpTransition(nn.Module):
     def __init__(self, inChans: int, outChans: int, nConvs: int, elu: bool, dropout: bool = False):
         super().__init__()
-        self.up_conv = fvnn.SparseConvTranspose3d(
-            inChans, outChans // 2, kernel_size=2, stride=2, bias=True
-        )
+        self.channel_fan_in = SparseLinear(inChans, outChans // 2, bias=True)
         self.bn1 = fvnn.BatchNorm(outChans // 2)
         self.relu1 = ELUCons(elu, outChans // 2)
         self.do1 = SparseDropout(p=0.5) if dropout else nn.Identity()
@@ -163,10 +173,10 @@ class UpTransition(nn.Module):
         out = self.do1(x)
         skipxdo = self.do2(skipx)
 
-        plan = _plan(x.grid, skipx.grid, kernel_size=2, stride=2)
-        out_data = self.up_conv(out.data, plan)
-        out_data = self.bn1(out_data, skipx.grid)
-        out = self.relu1(FvdbTensor(skipx.grid, out_data))
+        out = self.channel_fan_in(out)
+        out = FvdbTensor(out.grid, self.bn1(out.data, out.grid))
+        out_data, fine_grid = x.grid.refine(subdiv_factor=2, data=out.data, fine_grid=skipx.grid)
+        out = self.relu1(FvdbTensor(fine_grid, out_data))
 
         xcat = _cat(out, skipxdo)
         out = self.ops(xcat)
@@ -180,28 +190,23 @@ class OutputTransition(nn.Module):
         self.conv1 = fvnn.SparseConv3d(in_channels, classes, kernel_size=5, stride=1, bias=True)
         self.bn1 = fvnn.BatchNorm(classes)
         self.relu1 = ELUCons(elu, classes)
-        self.conv2 = fvnn.SparseConv3d(classes, classes, kernel_size=1, stride=1, bias=True)
+        self.conv2 = SparseLinear(classes, classes, bias=True)
 
     def forward(self, x: FvdbTensor) -> FvdbTensor:
         plan5 = _plan(x.grid, x.grid, kernel_size=5, stride=1)
         out = self.conv1(x.data, plan5)
         out = self.bn1(out, x.grid)
         out = self.relu1(FvdbTensor(x.grid, out))
-
-        plan1 = _plan(x.grid, x.grid, kernel_size=1, stride=1)
-        out = self.conv2(out.data, plan1)
-        return FvdbTensor(x.grid, out)
+        return self.conv2(out)
 
 
 class ChannelAdjuster(nn.Module):
     def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
-        self.conv = fvnn.SparseConv3d(in_channels, out_channels, kernel_size=1, stride=1, bias=True)
+        self.linear = SparseLinear(in_channels, out_channels, bias=True)
 
     def forward(self, x: FvdbTensor) -> FvdbTensor:
-        plan = _plan(x.grid, x.grid, kernel_size=1, stride=1)
-        out = self.conv(x.data, plan)
-        return FvdbTensor(x.grid, out)
+        return self.linear(x)
 
 
 Fvdb = {
