@@ -1,5 +1,10 @@
 import numpy as np
-import cupy as cp
+
+try:
+    import cupy as cp
+except Exception:
+    cp = None
+
 import torch
 import torch.utils.data as data
 from glob import glob
@@ -101,6 +106,8 @@ def load_volume(path, amp, z_size, cupy=False):
         datatype = np.float32
     # Expand the dimensions to match the expected input shape.
     if cupy:
+        if cp is None:
+            raise ImportError("load_volume(..., cupy=True) requires cupy, but cupy is not installed.")
         data = cp.expand_dims(unpacked_data.astype(datatype), 0)
         return torch.utils.dlpack.from_dlpack(cp.from_dlpack(data))
     else:
@@ -113,6 +120,8 @@ def load_array(path, amp, cupy=False):
     else:
         datatype = np.float32
     if cupy:
+        if cp is None:
+            raise ImportError("load_array(..., cupy=True) requires cupy, but cupy is not installed.")
         data = cp.load(path).astype(datatype)
         return torch.utils.dlpack.from_dlpack(cp.from_dlpack(data))
     else:
