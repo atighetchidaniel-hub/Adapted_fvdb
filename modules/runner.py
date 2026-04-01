@@ -5,7 +5,11 @@ import time
 import numpy as np
 import torch
 import torch.utils.benchmark as benchmark
-import spconv.pytorch as spconv
+
+try:
+    import spconv.pytorch as spconv
+except Exception:
+    spconv = None
 
 from modules.writer import TrainingLogger
 
@@ -493,7 +497,7 @@ class Runner:
         return loss, metrics
 
     @torch.no_grad()
-    def _save_output(self, output: torch.Tensor | spconv.SparseConvTensor, epoch: int, batch_idx: int):
+    def _save_output(self, output, epoch: int, batch_idx: int):
         output_save = output.sigmoid()
         output_save = (output_save > 0.5).int()
         save_volume(output_save.cpu(), os.path.join(
