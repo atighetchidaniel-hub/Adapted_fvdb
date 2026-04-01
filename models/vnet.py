@@ -1,5 +1,10 @@
 import torch
-from torchinfo import summary
+
+try:
+    from torchinfo import summary
+except Exception:
+    summary = None
+
 from modules.interleaver import Interleaver, Deinterleaver
 from backends import backends
 
@@ -59,8 +64,10 @@ class VNet(torch.nn.Module):
         ideal_out = torch.rand(1, self.classes, 32, 32, 32)
         out = self.forward(input_tensor)
         assert ideal_out.shape == out.shape
-        summary(self.to(torch.device(device)),
-                (self.in_channels, 32, 32, 32), device=device)
+        if summary is not None:
+            if summary is not None:
+                summary(self.to(torch.device(device)),
+                        (self.in_channels, 32, 32, 32), device=device)
         # import torchsummaryX
         # torchsummaryX.summary(self, input_tensor.to(device))
         print("Vnet test is complete")
@@ -211,7 +218,8 @@ class VNetLight(torch.nn.Module):
             ideal_out = torch.rand(1, self.classes, 32, 32, 32)
             out = self.forward(input_tensor)
             assert ideal_out.shape == out.shape
-            summary(self.to(torch.device(device)),
-                    (self.in_channels, 32, 32, 32), device=device)
+            if summary is not None:
+                summary(self.to(torch.device(device)),
+                        (self.in_channels, 32, 32, 32), device=device)
 
         print("Vnet light test is complete")
