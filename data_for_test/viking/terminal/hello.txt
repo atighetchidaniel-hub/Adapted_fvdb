@@ -1,0 +1,63 @@
+(fvdb_rc) bash-5.1$ cd /home/atighedl/Adapted_fvdb
+python - <<'PY'
+import argparse
+import torch
+
+from modules.dataset import PVSVoxelDataset
+from utils.init import init_model, init_loss, init_optimizer
+from utils.tensor import to_sparse
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+dataset_root = "/home/atighedl/Adapted_fvdb/data_for_test/viking/r30"
+
+dataset = PVSVoxelDataset(
+    root=dataset_root,
+    mode="infer",
+    z_size=256,
+)
+
+sample = dataset[0]
+x = torch.from_numpy(sample["input"]).unsqueeze(0).to(device)
+target = torch.from_numpy(sample["target"]).unsqueeze(0).to(device)
+
+args = argparse.Namespace(interleaver_r=2, dice_alpha=0.1)
+
+models = [
+    "VNet",
+    "VNetInterleaved",
+    "VNetLighter",
+    "VNetLight",
+    "OACNNs",
+    "OACNNsInterleaved",
+]
+
+for name in models:
+    if name.startswith("OACNNs"):
+        model = init_model(name, "fvdb", 1, 1, model_depth=2, args=args).to(device).train()
+        model_input = x
+    else:
+        model = init_model(name, "fvdb", 1, 1, args=args).to(device).train()
+        model_input = to_sparse(x, "fvdb")
+
+    criterion = init_loss("dice", "fvdb", 1, args)
+    optimizer, _ = init_optimizer("adam", model, lr=1e-4, no_scheduler=True)
+
+    optimizer.zero_grad(set_to_none=True)
+    y = model(model_input)
+    loss, metrics = criterion(y, target, {})
+    loss.backward()
+
+    grad_ok = any(
+PY  )   f"dice={metrics['dice']} | grad_ok={grad_ok}"tach()):.6f} | "
+Num of params:(43877377, 43877377)
+VNet: train_step_ok | loss=0.208844 | dice=[0.7911557] | grad_ok=True
+Num of params:(43877832, 43877832)
+VNetInterleaved: train_step_ok | loss=0.273668 | dice=[0.72633153] | grad_ok=True
+Num of params:(2810514, 2810514)
+VNetLighter: train_step_ok | loss=0.436415 | dice=[0.5635845] | grad_ok=True
+Num of params:(12067510, 12067510)
+VNetLight: train_step_ok | loss=0.298225 | dice=[0.70177466] | grad_ok=True
+Num of params:(1656929, 1656929)
+OACNNs: train_step_ok | loss=0.191674 | dice=[0.8083265] | grad_ok=True
+Num of params:(1669704, 1669704)
+OACNNsInterleaved: train_step_ok | loss=0.275975 | dice=[0.72402525] | grad_ok=True
