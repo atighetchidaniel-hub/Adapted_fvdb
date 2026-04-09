@@ -10,6 +10,7 @@ It is written for a fresh clone and focuses on reproducing the current `fvdb` mo
 - PyTorch `2.8.0` with CUDA `12.8`
 - `fvdb` via the `fvdb-core` package
 - PyTorch Geometric `2.6.1` plus the matching compiled extensions
+- `scikit-build-core`, `cmake`, `ninja`, and `pybind11` for the native `fvdb-core` build
 
 Suggested conda environment name:
 
@@ -55,6 +56,12 @@ Install `fvdb` after PyTorch:
 python -m pip install fvdb-core
 ```
 
+Install the native build prerequisites used by `fvdb-core`:
+
+```bash
+python -m pip install scikit-build-core cmake ninja pybind11
+```
+
 Install the PyTorch Geometric packages needed by the OA-CNN models:
 
 ```bash
@@ -66,6 +73,25 @@ Install the repo packages needed for training, logging, and the current validati
 
 ```bash
 python -m pip install numpy pandas tqdm tensorboard torchinfo
+```
+
+If the machine does not already expose a working CUDA toolkit with `nvcc`, install one into the conda environment:
+
+```bash
+conda install -c nvidia cuda-toolkit=12.8 -y
+```
+
+For an env-local CUDA toolkit, export these before installing `fvdb-core`:
+
+```bash
+export CUDA_HOME=$CONDA_PREFIX
+export CUDA_PATH=$CUDA_HOME
+export CUDACXX=$CUDA_HOME/bin/nvcc
+export CUDA_TOOLKIT_ROOT_DIR=$CUDA_HOME
+export CUDAToolkit_ROOT=$CUDA_HOME
+export CMAKE_PREFIX_PATH=$CUDA_HOME:${CMAKE_PREFIX_PATH:-}
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib:$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}
 ```
 
 ## 3. Optional Packages
