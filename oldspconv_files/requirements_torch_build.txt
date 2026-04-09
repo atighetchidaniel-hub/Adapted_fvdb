@@ -1,4 +1,0 @@
-# Packages that require PyTorch during build (install after PyTorch)
-cupy-cuda12x==13.6.0
-torch-cluster==1.6.3
-torch-geometric==2.6.1
