@@ -113,18 +113,8 @@ In practical terms, the neural-network refactor to `fvdb` is working.
 ## Remaining Work
 The next phase is no longer sparse-backend implementation. The remaining work is:
 
-- cleanup / packaging of the adapted repo
 - training real checkpoints for selected models
 - running inference to generate predicted PVV outputs
 - comparing predicted PVV against Unity ground-truth PVV
 - integrating predicted PVV back into the Unity rendering pipeline
 - building a demo loop for Unity + neural inference
-
-## Recommended Next Steps
-1. Clean and package the repo for presentation and reproducibility.
-2. Train one or two proper checkpoints, likely:
-   - VNet
-   - OACNNsInterleaved
-3. Run inference to produce `*_predicted_pvv.bin.gz`.
-4. Compare predicted PVV against Unity-generated ground truth.
-5. Feed predicted PVV back into Unity using the existing `RenderPVV` path.
