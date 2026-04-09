@@ -1,10 +1,5 @@
 import torch
 
-try:
-    import spconv.pytorch as spconv
-except Exception:
-    spconv = None
-
 from utils.tensor import to_dense
 
 
@@ -19,6 +14,8 @@ def get_loss_module(loss_type: torch.nn.Module) -> torch.nn.Module:
                 input (Tensor): Input tensor of shape (B, C, H, W, Z).
                 target (Tensor): Target tensor of shape (B, C, H, W, Z).
             """
+            # Wrap stock PyTorch losses so they can accept either dense tensors
+            # or backend wrappers like FvdbTensor.
             input = to_dense(input, target.shape)
             return super().forward(input, target)
 

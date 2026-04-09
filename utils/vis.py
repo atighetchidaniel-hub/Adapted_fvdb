@@ -5,11 +5,6 @@ import numpy as np
 import seaborn as sns
 import torch
 
-try:
-    import spconv.pytorch as spconv
-except Exception:
-    spconv = None
-
 from utils.tensor import FvdbTensor
 
 
@@ -22,8 +17,6 @@ def _feature_values(values: torch.Tensor) -> np.ndarray:
 def plot_hist(data: np.ndarray | torch.Tensor | FvdbTensor):
     if isinstance(data, torch.Tensor):
         data = torch.sigmoid(data.reshape(-1)).detach().cpu().numpy()
-    elif spconv is not None and isinstance(data, spconv.SparseConvTensor):
-        data = torch.sigmoid(data.features.reshape(-1)).detach().cpu().numpy()
     elif isinstance(data, FvdbTensor):
         data = torch.sigmoid(data.data.jdata.reshape(-1)).detach().cpu().numpy()
 
@@ -46,7 +39,6 @@ def scatter_3d(ax, data, title, vmin, vmax):
     Creates a 3D scatter plot on the given axis.
 
     Supported sparse inputs:
-      - spconv SparseConvTensor
       - FvdbTensor
       - tuple (coords, values)
     """
@@ -61,10 +53,6 @@ def scatter_3d(ax, data, title, vmin, vmax):
             return
         coords = np.stack(nonzero_idx, axis=1)
         values = dense_np[nonzero_idx]
-        sc = ax.scatter(coords[:, 0], coords[:, 1], coords[:, 2], c=values, cmap="viridis", vmin=vmin, vmax=vmax)
-    elif spconv is not None and isinstance(data, spconv.SparseConvTensor):
-        coords = data.indices[:, 1:4].detach().cpu().numpy()
-        values = _feature_values(data.features)
         sc = ax.scatter(coords[:, 0], coords[:, 1], coords[:, 2], c=values, cmap="viridis", vmin=vmin, vmax=vmax)
     elif isinstance(data, FvdbTensor):
         coords = data.grid.ijk.jdata.detach().cpu().numpy()
@@ -85,7 +73,7 @@ def scatter_3d(ax, data, title, vmin, vmax):
         sc = ax.scatter(spatial[:, 0], spatial[:, 1], spatial[:, 2], c=values, cmap="viridis", vmin=vmin, vmax=vmax)
     else:
         raise TypeError(
-            "Data must be a torch.Tensor, spconv SparseConvTensor, FvdbTensor, or a tuple (coords, values)"
+            "Data must be a torch.Tensor, FvdbTensor, or a tuple (coords, values)"
         )
 
     ax.set_title(title)

@@ -1,6 +1,8 @@
-*/**/__pycache__
-*/**/*.pyc
-*/**/*~
+__pycache__/
+*.py[cod]
+*.pyo
+*~
 .venv*
-.ipynb_checkpoints
+.ipynb_checkpoints/
+.pytest_cache/
 .DS_Store

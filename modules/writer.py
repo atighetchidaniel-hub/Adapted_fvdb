@@ -68,7 +68,8 @@ class TrainingLogger:
             if isinstance(value, (int, float)):
                 self.writer.add_scalar(tag, value, step)
             elif isinstance(value, np.ndarray):
-                # histogram – only if there’s actual data
+                # Histogram logging is useful for distributions such as
+                # per-frame inference metrics collected during evaluation.
                 if value.size > 0:
                     self.writer.add_histogram(tag, value, step)
                 else:
@@ -102,7 +103,8 @@ class TrainingLogger:
         if not os.path.exists(self.eval_csv):
             print(f"Evaluation CSV file {self.eval_csv} does not exist.")
             return
-        # Read the CSV file with pandas
+        # Summarize evaluation metrics after an inference run so experiments
+        # can be compared without opening TensorBoard.
         
         df = pd.read_csv(self.eval_csv)
         # For each column besides 'Step', compute mean, std, min, and max

@@ -3,11 +3,6 @@ import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader
 
-try:
-    import spconv
-except Exception:
-    spconv = None
-
 from losses.dice import SparseWeightedDiceLoss, WeightedDiceLoss
 from losses.sum import WeightedSumLoss
 from losses.focal import FocalLoss
@@ -33,10 +28,6 @@ def init_cuda(cuda: bool, cupy: bool, seed: int, inference: bool = False):
     if cupy:
         torch.multiprocessing.set_start_method('spawn')
 
-    if spconv is not None:
-        spconv.constants.SPCONV_ALLOW_TF32 = True
-        spconv.constants.SPCONV_CPP_GEMM = True
-
 
 def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
                in_channels: int = 1, classes: int = 1, model_depth: int = 3, args=None):
@@ -53,14 +44,14 @@ def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
         model = VNetInterleaved(elu=False, in_channels=in_channels,
                                 classes=classes, backend_type=backend_type, r=args.interleaver_r if args else 2)
     elif model_type == 'OACNNs':
-        if backend_type == 'spconv' and spconv is None:
-            raise ImportError("OACNNs with spconv backend requires spconv, but spconv is not installed.")
+        if backend_type != 'fvdb':
+            raise ValueError("OACNNs is now only supported with the fvdb backend.")
         from models.oacnn import OACNNs
         model = OACNNs(in_channels=in_channels, classes=classes,
                        backend_type=backend_type, depth=model_depth)
     elif model_type == 'OACNNsInterleaved':
-        if backend_type == 'spconv' and spconv is None:
-            raise ImportError("OACNNsInterleaved with spconv backend requires spconv, but spconv is not installed.")
+        if backend_type != 'fvdb':
+            raise ValueError("OACNNsInterleaved is now only supported with the fvdb backend.")
         from models.oacnn import OACNNsInterleaved
         model = OACNNsInterleaved(
             in_channels=in_channels, classes=classes, backend_type=backend_type,
@@ -85,7 +76,7 @@ def init_loss(loss_type: str | list[str] = 'dice', backend_type: str = 'torchnn'
             return [init_loss(l, backend_type, classes, args) for l in loss_type]
     if loss_type == 'dice':
         alpha = args.dice_alpha if args else 0.1
-        if backend_type in ('spconv', 'fvdb'):
+        if backend_type == 'fvdb':
             criterion = SparseWeightedDiceLoss(classes=classes, alpha=alpha)
         else:
             criterion = WeightedDiceLoss(classes=classes, alpha=alpha)

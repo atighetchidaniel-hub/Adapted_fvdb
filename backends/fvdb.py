@@ -7,6 +7,8 @@ from utils.tensor import FvdbTensor
 
 
 def _plan(source_grid, target_grid, kernel_size, stride=1):
+    # fvdb sparse convolutions need an explicit neighborhood mapping between
+    # the source and target sparse grids.
     return fvdb.ConvolutionPlan.from_grid_batch(
         kernel_size=kernel_size,
         stride=stride,
@@ -25,6 +27,8 @@ def _ensure_same_grid(a: FvdbTensor, b: FvdbTensor):
 
 
 def _replace_data(x: FvdbTensor, new_data):
+    # Most pointwise ops only change the feature matrix and keep the sparse
+    # voxel topology unchanged.
     if isinstance(new_data, fvdb.JaggedTensor):
         return FvdbTensor(x.grid, new_data)
     return FvdbTensor(x.grid, _jagged_like(x.grid, new_data))
@@ -91,6 +95,8 @@ class LUConv(nn.Module):
         self.relu1 = ELUCons(elu, nchan)
 
     def forward(self, x: FvdbTensor) -> FvdbTensor:
+        # This is a same-resolution sparse convolution, so the plan maps the
+        # grid back onto itself.
         plan = _plan(x.grid, x.grid, kernel_size=5, stride=1)
         out = self.conv(x.data, plan)
         out = self.bn1(out, x.grid)
@@ -128,6 +134,8 @@ class InputTransition(nn.Module):
                 f"num_features={self.num_features} not multiple of in_channels={self.in_channels}"
             )
 
+        # Match the original VNet residual behavior by repeating the input
+        # channels when the first sparse block widens the feature count.
         x_expanded = _replace_data(x, x.data.jdata.repeat(1, repeat_rate))
         return self.relu1(_add(out, x_expanded))
 
@@ -144,6 +152,8 @@ class DownTransition(nn.Module):
         self.relu2 = ELUCons(elu, outChans)
 
     def forward(self, x: FvdbTensor) -> FvdbTensor:
+        # Downsampling in fvdb changes the sparse topology first, then pools
+        # features onto the coarsened grid.
         coarse_grid = x.grid.coarsened_grid(2)
         pooled_data, coarse_grid = x.grid.max_pool(pool_factor=2, data=x.data, coarse_grid=coarse_grid)
 
@@ -175,6 +185,8 @@ class UpTransition(nn.Module):
 
         out = self.channel_fan_in(out)
         out = FvdbTensor(out.grid, self.bn1(out.data, out.grid))
+        # Upsampling refines the coarse sparse grid back onto the skip
+        # connection topology before concatenation.
         out_data, fine_grid = x.grid.refine(subdiv_factor=2, data=out.data, fine_grid=skipx.grid)
         out = self.relu1(FvdbTensor(fine_grid, out_data))
 
@@ -197,6 +209,8 @@ class OutputTransition(nn.Module):
         out = self.conv1(x.data, plan5)
         out = self.bn1(out, x.grid)
         out = self.relu1(FvdbTensor(x.grid, out))
+        # The final channel projection is pointwise, so a linear layer is
+        # enough and avoids changing the sparse topology.
         return self.conv2(out)
 
 

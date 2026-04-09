@@ -17,6 +17,8 @@ class VNet(torch.nn.Module):
     def __init__(self, elu=True, in_channels=1, classes=4, backend_type='torchnn'):
         super(VNet, self).__init__()
         self.backend_type = backend_type
+        # The concrete sparse/dense building blocks are injected through the
+        # backend registry so the high-level VNet layout stays backend-agnostic.
         self.backend = backends[backend_type]
         self.classes = classes
         self.in_channels = in_channels
@@ -29,6 +31,9 @@ class VNet(torch.nn.Module):
         self.init_model(in_channels, classes, elu)
 
     def init_model(self, in_channels, classes, elu, embedded_channels=32):
+        # ChannelAdjuster provides a uniform entry/exit width across backends,
+        # which keeps the VNet stages consistent even when the input/output
+        # channel counts differ from the internal feature width.
         self.in_adjuster = self.backend['ChannelAdjuster'](
                 in_channels, embedded_channels)
 
@@ -49,6 +54,7 @@ class VNet(torch.nn.Module):
             embedded_channels, classes)
 
     def forward(self, x, data={}):
+        # Standard VNet encoder-decoder with two skip connections.
         x = self.in_adjuster(x)
         out64 = self.in_tr(x)
         out128 = self.down_tr128(out64)
@@ -86,6 +92,8 @@ class VNetInterleaved(VNet):
             elu, in_channels, classes, backend_type)
 
     def init_model(self, in_channels, classes, elu, embedded_channels=32):
+        # Interleaving trades spatial resolution for channels before entering
+        # the backbone, then restores the original layout at the end.
         interleaved_in_channels = in_channels * (self.r ** 3)
         interleaved_classes = classes * (self.r ** 3)
 
@@ -115,6 +123,8 @@ class VNetInterleaved(VNet):
         self.deinterleaver = Deinterleaver(self.r)
 
     def forward(self, x, data={}):
+        # The backbone itself operates on the interleaved representation; only
+        # the wrapper handles conversion in and out of that layout.
         x = self.interleaver(x)
         x = self.in_adjuster(x)
         out64 = self.in_tr(x)
@@ -138,6 +148,8 @@ class VNetLighter(torch.nn.Module):
         self.backend = backends[backend_type]
         self.classes = classes
         self.in_channels = in_channels
+        # This variant keeps the full encoder-decoder shape but greatly reduces
+        # the internal channel counts.
         self.in_tr = self.backend['InputTransition'](
             in_channels, elu, num_features=4)
         self.down_tr8 = self.backend['DownTransition'](4, 1, elu)
@@ -182,6 +194,8 @@ class VNetLight(torch.nn.Module):
         self.backend = backends[backend_type]
         self.classes = classes
         self.in_channels = in_channels
+        # This variant shortens the network by removing the deepest VNet stage
+        # rather than shrinking every stage width.
         self.in_tr = self.backend['InputTransition'](in_channels, elu)
         self.down_tr32 = self.backend['DownTransition'](16, 1, elu)
         self.down_tr64 = self.backend['DownTransition'](32, 2, elu)

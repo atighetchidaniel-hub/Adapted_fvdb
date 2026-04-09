@@ -6,11 +6,6 @@ import numpy as np
 import torch
 import torch.utils.benchmark as benchmark
 
-try:
-    import spconv.pytorch as spconv
-except Exception:
-    spconv = None
-
 from modules.writer import TrainingLogger
 
 from utils.args import save_arguments
@@ -150,6 +145,8 @@ class Runner:
                     pred_dense = to_dense(pred, target.shape)
 
                     if n_caches > 0:
+                        # Optional temporal smoothing: keep the last few binary
+                        # predictions and combine them with a voxel-wise OR.
                         # Cache the prediction
                         if len(pred_caches) < n_caches:
                             pred_caches.append(pred_dense)
@@ -376,6 +373,8 @@ class Runner:
 
             input = to_sparse(input, self.args.backend)
 
+            # The runner keeps the dense-to-backend conversion here so model
+            # code can assume it receives the correct representation.
             requires_grad(input, True)
 
             try:
@@ -471,6 +470,8 @@ class Runner:
             loss = 0
             metrics = {}
             for i, crit in enumerate(self.criterion):
+                # Multiple losses are supported as a weighted sum while still
+                # recording their individual scalar values for logging.
                 _loss, _metrics = self._call_criterion(
                     crit, pred, target, extras, record_loss_name=True)
                 loss += _loss * \
@@ -500,6 +501,8 @@ class Runner:
     def _save_output(self, output, epoch: int, batch_idx: int):
         output_save = output.sigmoid()
         output_save = (output_save > 0.5).int()
+        # Inference outputs are written back in the same bit-packed `.bin.gz`
+        # format as Unity-generated PVV targets.
         save_volume(output_save.cpu(), os.path.join(
             self.args.save, "inference", str(epoch), "{}_predicted_pvv.bin.gz".format(batch_idx)))
 
@@ -538,6 +541,8 @@ def max_pool_dilate3d(x: torch.Tensor, n: int) -> torch.Tensor:
 
     # Compute padding for each side: floor(n/2)
     pad = n // 2
+    # This uses max-pooling as a simple binary dilation operator on predicted
+    # visibility volumes.
     # max_pool3d expects input in [B, C, D, H, W], which matches [B, 1, H, W, Z]
     # Use stride=1 to slide the window by one voxel and padding to preserve shape
     pooled = torch.nn.functional.max_pool3d(x, kernel_size=n, stride=1, padding=pad)

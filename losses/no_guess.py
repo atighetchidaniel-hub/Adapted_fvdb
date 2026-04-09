@@ -18,6 +18,8 @@ class NoGuessLoss(nn.Module):
         inputs = self.normalization(inputs)
         gv = extract_data(data, 'gv')
         pvv = extract_data(data, 'pvv')
+        # Penalize confident predictions outside the geometry support and reward
+        # mass placed on the known visible subset.
         inputs = torch.where(gv > eps, inputs, torch.zeros_like(inputs, dtype=inputs.dtype))
 
         return inputs[pvv < eps].sum() / gv.sum() + 1 - (inputs[pvv > eps].sum() / gv.sum())

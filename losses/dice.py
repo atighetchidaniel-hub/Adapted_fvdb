@@ -1,11 +1,6 @@
 import torch
 from torch import nn
 
-try:
-    import spconv.pytorch as spconv
-except Exception:
-    spconv = None
-
 from utils.tensor import FvdbTensor, flatten, expand_as_one_hot, to_dense
 
 
@@ -71,7 +66,8 @@ class _AbstractDiceLoss(nn.Module):
         return target[:, 0:index, ...]
 
     def forward(self, input, target, data: dict):
-        # Usually we use the sparse version of the loss. Just for debugging
+        # Dense Dice remains useful for debugging and for non-fvdb backends, so
+        # this base path always densifies first.
         input = to_dense(input, target.shape)
 
         """
@@ -185,19 +181,14 @@ class SparseWeightedDiceLoss(nn.Module):
     def dice(self, input, target: torch.Tensor, weight: float | None = None) -> torch.Tensor:
         epsilon = 1e-6
 
-        if spconv is not None and isinstance(input, spconv.SparseConvTensor):
-            coords = input.indices
-            batch_indices = coords[:, 0].long()
-            x = coords[:, 1].long()
-            y = coords[:, 2].long()
-            z = coords[:, 3].long()
-            target_feat = target[batch_indices, :, x, y, z].type(input.features.dtype)
-            input_feat = input.features
-        elif isinstance(input, FvdbTensor):
+        if isinstance(input, FvdbTensor):
+            # Align the dense target with the active fvdb voxels so Dice is
+            # computed directly on sparse features instead of on a densified
+            # volume.
             target_feat = input.grid.inject_from_dense_cmajor(target).jdata.type(input.data.jdata.dtype)
             input_feat = input.data.jdata
         else:
-            raise TypeError(f"SparseWeightedDiceLoss expects a sparse tensor, got {type(input)}")
+            raise TypeError(f"SparseWeightedDiceLoss expects an FvdbTensor, got {type(input)}")
 
         intersect = (input_feat * target_feat).sum(dim=0)
         fp = ((input_feat ** 2) * ((1 - target_feat) ** 2)).sum(dim=0)
@@ -217,16 +208,14 @@ class SparseWeightedDiceLoss(nn.Module):
         """
         Expand to one hot added extra for consistency reasons
         """
-        is_spconv = spconv is not None and isinstance(input, spconv.SparseConvTensor)
         is_fvdb = isinstance(input, FvdbTensor)
-        if not is_spconv and not is_fvdb:
+        if not is_fvdb:
+            # Fall back to the dense implementation when evaluation code passes
+            # a plain tensor instead of an fvdb sparse wrapper.
             return self._dense_dice(input, target, data)
 
         if self.normalization is not None:
-            if is_spconv:
-                input = input.replace_feature(self.normalization(input.features))
-            else:
-                input = input.replace_data(self.normalization(input.data.jdata))
+            input = input.replace_data(self.normalization(input.data.jdata))
 
         per_channel_dice = self.dice(input, target, weight=self.weight)
 

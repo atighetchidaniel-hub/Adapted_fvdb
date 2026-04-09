@@ -69,7 +69,8 @@ def make_dataset(paths, test_fraction, seed, mode, exts=None):
     # Compute the splits.
     train_split, test_split = train_test_split(file_lists, test_fraction)
 
-    # Choose the split according to the mode. Here, if train_split is empty, we use test_split.
+    # On tiny pilot datasets the training split can become empty, so fall back
+    # to the test split instead of failing outright.
     if mode == "train":
         keys = train_split if len(train_split) > 0 else test_split
     else:
@@ -84,7 +85,7 @@ def full_dataset(path, ext="bin.gz"):
         print("Path does not exist: {}".format(path))
         return []
     files = glob(os.path.join(path, "*.{}".format(ext)))
-    # Filter out files that are not in the format "0000_gv.bin.gz" or "0000_pvv.bin.gz"
+    # Keep only NeuralPVS-style numbered files such as `54_gv.bin.gz`.
     files = [f for f in files if os.path.basename(f).split("_")[0].isdigit()]
     files = sorted(files, key=lambda x: int(os.path.basename(x).split("_")[0]))
     return files
@@ -97,6 +98,8 @@ def load_volume(path, amp, z_size, cupy=False):
         data = np.frombuffer(f.read(), dtype=np.int32)
     data = data.byteswap()
     data = data.view(np.uint8)
+    # NeuralPVS stores voxel grids as bit-packed gzip streams. `z_size` is the
+    # known depth, and the in-plane size is reconstructed from the bit count.
     size = np.int32(np.sqrt(data.nbytes*8/z_size))
     unpacked_data = np.unpackbits(data).reshape((size, size, z_size))
     # unpacked_data = cucim.skimage.measure.block_reduce(unpacked_data,4,cp.max)
@@ -143,9 +146,11 @@ class PVSVoxelDataset(data.Dataset):
         self.cupy = cupy
         self.amp = amp
         if mode == "infer":
+            # In inference we keep the full ordered dataset.
             self.gvs = full_dataset(self.gv_path)
             self.pvvs = full_dataset(self.pvv_path)
         else:
+            # Training/validation split is generated from paired gv/pvv files.
             self.gvs, self.pvvs = make_dataset(
                 [self.gv_path, self.pvv_path], test_fraction, seed, self.mode)
         if (len(self.gvs) == 0):
@@ -157,7 +162,8 @@ class PVSVoxelDataset(data.Dataset):
         gv = load_volume(self.gvs[index], self.amp, self.z_size, self.cupy)
         pvv = load_volume(self.pvvs[index], self.amp, self.z_size, self.cupy) if index < len(self.pvvs) else gv
 
-        # Filter out pvv that are not in gv
+        # Potential visibility is only defined on occupied geometry voxels, so
+        # clamp the target to the geometry support.
         if self.cupy:
             pvv = torch.where(gv > 0, pvv, torch.zeros_like(pvv, dtype=pvv.dtype))
         else:

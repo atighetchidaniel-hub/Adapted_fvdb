@@ -28,11 +28,10 @@ python scripts/setup_venv.py
 
 - Python 3.12
 - PyTorch 2.7 with CUDA 12.8
-- spconv (for sparse convolution backend)
+- fVDB for the sparse convolution backend
+- torch-geometric and torch-cluster for the OA-CNN models
 
-The specified spconv whl is for RTX 5090 or higher, as the spconv releases on PyPI do not support the latest GPU architectures. Adjust accordingly for other GPUs.
-
-The setup is tested on Oracle Linux 9.6 and Windows 10/11. If it does not work for you, please manually install the PyTorch and build spconv from source.
+The setup is tested on Oracle Linux 9.6 and Windows 10/11. Install fVDB in the active environment before using the sparse models.
 
 ## Dataset and Output Structure
 
@@ -69,7 +68,7 @@ python train.py \
     --z_size 256 \
     --test_fraction 0.05 \
     --model OACNNsInterleaved \
-    --backend spconv \
+    --backend fvdb \
     --model_depth 3 \
     --loss dice,no_guess \
     --loss_weights 0.99,0.01 \
@@ -92,7 +91,7 @@ python train.py \
 | `--z_size` | Voxel grid Z dimension | required |
 | `--test_fraction` | Validation split ratio | required |
 | `--model` | Model architecture (`VNet`, `VNetInterleaved`, `OACNNsInterleaved`) | `VNet` |
-| `--backend` | Convolution backend (`torchnn`, `spconv`) | `torchnn` |
+| `--backend` | Convolution backend (`torchnn`, `fvdb`) | `fvdb` |
 | `--model_depth` | Network depth | `3` |
 | `--interleaver_r` | Interleaving factor for interleaved models | `2` |
 | `--loss` | Loss function(s), comma-separated (`dice`, `no_guess`, `focal`) | `dice` |

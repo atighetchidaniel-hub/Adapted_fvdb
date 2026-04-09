@@ -1,11 +1,6 @@
 import torch
 from torch import nn
 
-try:
-    import spconv.pytorch as spconv
-except Exception:
-    spconv = None
-
 from utils.tensor import flatten, expand_as_one_hot, to_dense
 from utils.train import extract_data
 
@@ -39,6 +34,9 @@ class Metrics(nn.Module):
         fp_ratio = -1
         gv = extract_data(data, 'gv')
         if gv is not None:
+            # `gv` gives the occupied geometry support, which makes the false
+            # positive count easier to interpret than dividing by the full dense
+            # tensor volume.
             fp_ratio = (fp / gv.sum())
 
         # denominator = (input * input).sum(-1) + (target * target).sum(-1)
@@ -84,7 +82,8 @@ class Metrics(nn.Module):
 
         gv = extract_data(data, 'gv')
         if gv is not None:
-            # Remove points that are not in the target
+            # Predictions outside the geometry volume are not meaningful for
+            # NeuralPVS, so metrics ignore them during evaluation.
             input = torch.where(gv > 0, input, torch.zeros_like(input, dtype=input.dtype))
 
         metrics = self.false_positive_negative(input, target, data)
