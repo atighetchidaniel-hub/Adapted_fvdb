@@ -50,29 +50,10 @@ Install PyTorch first:
 python -m pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu128
 ```
 
-Install `fvdb` after PyTorch:
-
-```bash
-python -m pip install fvdb-core
-```
-
 Install the native build prerequisites used by `fvdb-core`:
 
 ```bash
 python -m pip install scikit-build-core cmake ninja pybind11
-```
-
-Install the PyTorch Geometric packages needed by the OA-CNN models:
-
-```bash
-python -m pip install torch-geometric==2.6.1
-python -m pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.8.0+cu128.html
-```
-
-Install the repo packages needed for training, logging, and the current validation scripts:
-
-```bash
-python -m pip install numpy pandas tqdm tensorboard torchinfo
 ```
 
 If the machine does not already expose a working CUDA toolkit with `nvcc`, install one into the conda environment:
@@ -92,6 +73,25 @@ export CUDAToolkit_ROOT=$CUDA_HOME
 export CMAKE_PREFIX_PATH=$CUDA_HOME:${CMAKE_PREFIX_PATH:-}
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib:$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}
+```
+
+Install `fvdb` after PyTorch and the build prerequisites:
+
+```bash
+python -m pip install --no-build-isolation fvdb-core
+```
+
+Install the PyTorch Geometric packages needed by the OA-CNN models:
+
+```bash
+python -m pip install torch-geometric==2.6.1
+python -m pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.8.0+cu128.html
+```
+
+Install the repo packages needed for training, logging, and the current validation scripts:
+
+```bash
+python -m pip install numpy pandas tqdm tensorboard torchinfo
 ```
 
 ## 3. Optional Packages
