@@ -70,7 +70,4 @@ data_for_test/viking/r30/
 - `scripts/run_validation.sh`: lightweight wrapper for the validator
 - `scripts/setup_and_validate_fvdb.sh`: setup + validation in one run
 
-## Notes
 
-- `oldspconv_files/` is kept only as archived reference material from the earlier codebase state.
-- The Unity-side scene generation and rendering repo is separate from this training repo.
