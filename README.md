@@ -41,7 +41,7 @@ bash scripts/run_validation.sh --save-json results/fvdb_validation_summary.json
 
 - Setup guide: `SETUP_CONDA_FVDB.md`
 - Migration summary: `FVDB_MIGRATION_SUMMARY.md`
-- Progress/status snapshot: `STATUS_UPDATE_2026-04-09.md`
+- Progress/status snapshot: `STATUS_UPDATE_2026-04-10.md`
 
 ## Dataset Layout
 

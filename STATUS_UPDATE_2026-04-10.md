@@ -1,4 +1,4 @@
-# Status Update - 2026-04-09
+# Status Update - 2026-04-10
 
 ## Summary
 The `spconv` to `fvdb` backend migration in the adapted NeuralPVS repo is now implemented and validated on both synthetic data and real Unity-generated data.
@@ -57,7 +57,7 @@ A second real dataset was generated from the Viking Village scene.
 
 Dataset properties:
 - dataset root: `data_for_test/viking/r30`
-- samples: `818`
+- samples: `74`
 - sample shape: `(1, 256, 256, 256)`
 
 Loader sanity check:

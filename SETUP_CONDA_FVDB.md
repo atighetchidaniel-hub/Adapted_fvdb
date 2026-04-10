@@ -199,7 +199,7 @@ PY
 
 The validated Viking dataset used for the current progress report produced:
 
-- `num samples: 818`
+- `num samples: 74`
 - `input shape: (1, 256, 256, 256)`
 - `target shape: (1, 256, 256, 256)`
 
@@ -362,7 +362,7 @@ python train.py \
 ## 11. Related Repo Documents
 
 - `FVDB_MIGRATION_SUMMARY.md`
-- `STATUS_UPDATE_2026-04-09.md`
+- `STATUS_UPDATE_2026-04-10.md`
 
 These two files summarize:
 
