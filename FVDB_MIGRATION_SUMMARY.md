@@ -203,4 +203,3 @@ That change affected:
 - sparse loss computation
 - runner utilities
 
-In short, the project moved from a `spconv`-centric sparse design to an `fVDB`-native sparse design.
