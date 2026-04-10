@@ -180,7 +180,7 @@ The migration relied primarily on these official `fVDB` APIs:
 
 These APIs are consistent with the official `fVDB` documentation and the `SimpleUNet` reference implementation.
 
-## 10. Short Thesis Summary
+## 10. Short Conversion Summary
 
 The migration was not just a one-to-one operator swap.
 
