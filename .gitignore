@@ -7,3 +7,7 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 *.pth
+
+# Generated TensorBoard event files
+**/tensorboard/
+events.out.tfevents.*

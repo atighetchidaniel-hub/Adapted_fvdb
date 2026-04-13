@@ -1,2 +1,0 @@
-Step,dice,loss,fp,fn,tn,tp,fp_rate,fn_rate,fp_ratio,gv_ratio,epoch
-0,0.5600165128707886,0.4399834871292114,0.0,52201.0,16725015.0,0.0,0.0,1.0,0.0,0.0,1
