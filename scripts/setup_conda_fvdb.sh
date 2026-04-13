@@ -70,9 +70,9 @@ conda run -n "${ENV_NAME}" python -m pip install \
   pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv \
   -f https://data.pyg.org/whl/torch-2.8.0+cu128.html
 
-echo "Installing repo packages needed for validation"
+echo "Installing repo packages needed for validation and visualization"
 conda run -n "${ENV_NAME}" python -m pip install \
-  numpy pandas tqdm tensorboard torchinfo
+  numpy pandas tqdm tensorboard torchinfo matplotlib open3d
 
 echo
 echo "Environment setup complete."

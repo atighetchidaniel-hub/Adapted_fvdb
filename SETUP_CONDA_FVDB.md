@@ -88,10 +88,10 @@ python -m pip install torch-geometric==2.6.1
 python -m pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.8.0+cu128.html
 ```
 
-Install the repo packages needed for training, logging, and the current validation scripts:
+Install the repo packages needed for training, logging, validation, and visualization scripts:
 
 ```bash
-python -m pip install numpy pandas tqdm tensorboard torchinfo
+python -m pip install numpy pandas tqdm tensorboard torchinfo matplotlib open3d
 ```
 
 ## 3. Optional Packages
@@ -99,13 +99,13 @@ python -m pip install numpy pandas tqdm tensorboard torchinfo
 These were not required for the core `fvdb` validation sweeps, but they are useful for auxiliary scripts and analysis:
 
 ```bash
-python -m pip install cupy-cuda12x matplotlib seaborn scipy open3d av opencv-python
+python -m pip install cupy-cuda12x seaborn scipy av opencv-python
 ```
 
 Notes:
 
 - `cupy-cuda12x` is only needed if you want to use the `--cupy` data-loading path.
-- `open3d`, `matplotlib`, `av`, and `opencv-python` are mainly used by visualization and video-analysis scripts.
+- `seaborn`, `av`, and `opencv-python` are mainly used by optional analysis and video scripts.
 
 ## 4. Quick Environment Smoke Test
 

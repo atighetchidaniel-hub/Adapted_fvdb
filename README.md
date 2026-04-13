@@ -80,4 +80,12 @@ bash scripts/view_fvdb_visual_result.sh 0
 
 This uses the original Open3D visualization path and compares the Viking GV, Unity ground-truth PVV, and fVDB predicted PVV for the selected sample id.
 
+For a non-interactive PNG summary that works without the Open3D GUI, run:
+
+```bash
+python scripts/save_fvdb_visual_result.py --id 0
+```
+
+This writes a side-by-side max-projection image to `results/visuals/`.
+
 
