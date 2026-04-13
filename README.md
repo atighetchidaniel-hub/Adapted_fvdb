@@ -70,4 +70,14 @@ data_for_test/viking/r30/
 - `scripts/run_validation.sh`: lightweight wrapper for the validator
 - `scripts/setup_and_validate_fvdb.sh`: setup + validation in one run
 
+## Visual Result
+
+After activating the `neuralpvs_fvdb` environment, open the existing Viking fVDB visual inference result with:
+
+```bash
+bash scripts/view_fvdb_visual_result.sh 0
+```
+
+This uses the original Open3D visualization path and compares the Viking GV, Unity ground-truth PVV, and fVDB predicted PVV for the selected sample id.
+
 
