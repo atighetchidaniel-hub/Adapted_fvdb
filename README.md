@@ -68,6 +68,7 @@ data_for_test/viking/r30/
 - `scripts/setup_conda_fvdb.sh`: create and populate the conda environment
 - `scripts/validate_fvdb_models.py`: run loader, forward, and train-step validation
 - `scripts/run_validation.sh`: lightweight wrapper for the validator
+- `scripts/summarize_paper_metrics.py`: summarize paper-style FNR/FPR from `eval_stats.csv`
 - `scripts/setup_and_validate_fvdb.sh`: setup + validation in one run
 
 ## Visual Result
