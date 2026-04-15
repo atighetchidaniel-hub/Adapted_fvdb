@@ -1,0 +1,114 @@
+===== VNet 100ep =====
+eval_stats: data_for_test/out/VNet_viking_r30_dice_20260414-170426_viking_vnet_100ep-paperstyle_eval_mp5_sJ1MJOSr/eval_stats.csv
+Mean voxel counts:
+  TP:  114052.540541
+  FN:  4223.567568
+  FP:  155952.891892
+  TN:  16502987.000000
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.035709 (3.571%)
+  FPR = FP / GTP: 1.318549 (131.855%)
+  Predicted-visible / GTP: 2.282840
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.587473
+  weighted Dice reported by runner: 0.276675
+  repo fn_rate = FN / (FN + TP): 0.038988
+  repo fp_rate = FP / (FP + TN): 0.009363
+  repo fp_ratio = FP / GV: 0.344340
+  gv_ratio: 0.598330
+  loss: 0.723325
+
+===== OACNNsInterleaved r2 100ep =====
+eval_stats: data_for_test/out/OACNNsInterleaved_viking_r30_dice_20260414-225711_viking_oacnn_interleaved_r2_100ep-viking_oacnn_interleaved_r2_100ep_paperstyle_eval_2mKTCpUm/eval_stats.csv
+Mean voxel counts:
+  TP:  115877.108108
+  FN:  2399.000000
+  FP:  50414.243243
+  TN:  16608525.648649
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.020283 (2.028%)
+  FPR = FP / GTP: 0.426242 (42.624%)
+  Predicted-visible / GTP: 1.405959
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.814409
+  weighted Dice reported by runner: 0.971042
+  repo fn_rate = FN / (FN + TP): 0.021097
+  repo fp_rate = FP / (FP + TN): 0.003027
+  repo fp_ratio = FP / GV: 0.111918
+  gv_ratio: 0.371134
+  loss: 0.028958
+
+===== VNet alpha005 100ep =====
+eval_stats: data_for_test/out/VNet_viking_r30_dice_20260414-221621_viking_vnet_100ep_alpha005-viking_vnet_100ep_alpha005_paperstyle_eval_QjQmijR9/eval_stats.csv
+Mean voxel counts:
+  TP:  113356.891892
+  FN:  4919.216216
+  FP:  37306.486486
+  TN:  16621633.405405
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.041591 (4.159%)
+  FPR = FP / GTP: 0.315419 (31.542%)
+  Predicted-visible / GTP: 1.273828
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.842992
+  weighted Dice reported by runner: 0.973129
+  repo fn_rate = FN / (FN + TP): 0.045522
+  repo fp_rate = FP / (FP + TN): 0.002240
+  repo fp_ratio = FP / GV: 0.083185
+  gv_ratio: 0.335436
+  loss: 0.026871
+
+===== VNet 100ep max_pool_size 3 =====
+eval_stats: data_for_test/out/VNet_viking_r30_dice_20260414-170252_viking_vnet_100ep-paperstyle_eval_mp3_C72HWh2Y/eval_stats.csv
+Mean voxel counts:
+  TP:  113659.229730
+  FN:  4616.878378
+  FP:  115287.324324
+  TN:  16543652.567568
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.039035 (3.903%)
+  FPR = FP / GTP: 0.974730 (97.473%)
+  Predicted-visible / GTP: 1.935696
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.654676
+  weighted Dice reported by runner: 0.280553
+  repo fn_rate = FN / (FN + TP): 0.042620
+  repo fp_rate = FP / (FP + TN): 0.006922
+  repo fp_ratio = FP / GV: 0.256530
+  gv_ratio: 0.509542
+  loss: 0.719447
+
+===== VNet 100ep max_pool_size 5 =====
+eval_stats: data_for_test/out/VNet_viking_r30_dice_20260414-170426_viking_vnet_100ep-paperstyle_eval_mp5_sJ1MJOSr/eval_stats.csv
+Mean voxel counts:
+  TP:  114052.540541
+  FN:  4223.567568
+  FP:  155952.891892
+  TN:  16502987.000000
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.035709 (3.571%)
+  FPR = FP / GTP: 1.318549 (131.855%)
+  Predicted-visible / GTP: 2.282840
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.587473
+  weighted Dice reported by runner: 0.276675
+  repo fn_rate = FN / (FN + TP): 0.038988
+  repo fp_rate = FP / (FP + TN): 0.009363
+  repo fp_ratio = FP / GV: 0.344340
+  gv_ratio: 0.598330
+  loss: 0.723325

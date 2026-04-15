@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/VNet_viking_r30_dice_20260414-170426_viking_vnet_100ep-paperstyle_eval_mp5_sJ1MJOSr/eval_stats.csv
+Mean voxel counts:
+  TP:  114052.540541
+  FN:  4223.567568
+  FP:  155952.891892
+  TN:  16502987.000000
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.035709 (3.571%)
+  FPR = FP / GTP: 1.318549 (131.855%)
+  Predicted-visible / GTP: 2.282840
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.587473
+  weighted Dice reported by runner: 0.276675
+  repo fn_rate = FN / (FN + TP): 0.038988
+  repo fp_rate = FP / (FP + TN): 0.009363
+  repo fp_ratio = FP / GV: 0.344340
+  gv_ratio: 0.598330
+  loss: 0.723325

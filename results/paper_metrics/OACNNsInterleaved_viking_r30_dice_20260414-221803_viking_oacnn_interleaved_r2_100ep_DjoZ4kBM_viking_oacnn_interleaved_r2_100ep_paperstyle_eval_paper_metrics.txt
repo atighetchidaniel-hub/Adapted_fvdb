@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/OACNNsInterleaved_viking_r30_dice_20260414-225711_viking_oacnn_interleaved_r2_100ep-viking_oacnn_interleaved_r2_100ep_paperstyle_eval_2mKTCpUm/eval_stats.csv
+Mean voxel counts:
+  TP:  115877.108108
+  FN:  2399.000000
+  FP:  50414.243243
+  TN:  16608525.648649
+  GTP = TP + FN: 118276.108108
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.020283 (2.028%)
+  FPR = FP / GTP: 0.426242 (42.624%)
+  Predicted-visible / GTP: 1.405959
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.814409
+  weighted Dice reported by runner: 0.971042
+  repo fn_rate = FN / (FN + TP): 0.021097
+  repo fp_rate = FP / (FP + TN): 0.003027
+  repo fp_ratio = FP / GV: 0.111918
+  gv_ratio: 0.371134
+  loss: 0.028958
