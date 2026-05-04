@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/OACNNs_bigcity/bigcity/r30_dice_20260428-045527_bigcity_OACNNs_200ep_overnight-bigcity_OACNNs_200ep_overnight_paperstyle_eval_MGFb7yQA/eval_stats.csv
+Mean voxel counts:
+  TP:  66093.360825
+  FN:  160.639175
+  FP:  40128.969072
+  TN:  16670833.030928
+  GTP = TP + FN: 66254.000000
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.002425 (0.242%)
+  FPR = FP / GTP: 0.605684 (60.568%)
+  Predicted-visible / GTP: 1.603259
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.766405
+  weighted Dice reported by runner: 0.998570
+  repo fn_rate = FN / (FN + TP): 0.002568
+  repo fp_rate = FP / (FP + TN): 0.002401
+  repo fp_ratio = FP / GV: 0.104000
+  gv_ratio: 0.275387
+  loss: 0.001430

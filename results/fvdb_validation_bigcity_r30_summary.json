@@ -1,0 +1,170 @@
+{
+  "dataset_root": "data_for_test/bigcity/bigcity/r30",
+  "z_size": 256,
+  "device": "cuda",
+  "loader": {
+    "num_samples": 97,
+    "input_shape": [
+      1,
+      256,
+      256,
+      256
+    ],
+    "target_shape": [
+      1,
+      256,
+      256,
+      256
+    ],
+    "input_sum": 378550.0,
+    "target_sum": 63058.0
+  },
+  "forward": [
+    {
+      "model": "VNet",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.2516726851463318,
+      "dice": [
+        0.7483273148536682
+      ]
+    },
+    {
+      "model": "VNetInterleaved",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.3334770202636719,
+      "dice": [
+        0.6665229797363281
+      ]
+    },
+    {
+      "model": "VNetLighter",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.4851996898651123,
+      "dice": [
+        0.5148003101348877
+      ]
+    },
+    {
+      "model": "VNetLight",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.21764129400253296,
+      "dice": [
+        0.782358705997467
+      ]
+    },
+    {
+      "model": "OACNNs",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.2593050003051758,
+      "dice": [
+        0.7406949996948242
+      ]
+    },
+    {
+      "model": "OACNNsInterleaved",
+      "output_type": "FvdbTensor",
+      "output_shape": [
+        1,
+        1,
+        256,
+        256,
+        256
+      ],
+      "finite": true,
+      "loss": 0.3312877416610718,
+      "dice": [
+        0.6687122583389282
+      ]
+    }
+  ],
+  "train_step": [
+    {
+      "model": "VNet",
+      "loss": 0.271603524684906,
+      "dice": [
+        0.728396475315094
+      ],
+      "grad_ok": true
+    },
+    {
+      "model": "VNetInterleaved",
+      "loss": 0.3303905725479126,
+      "dice": [
+        0.6696094274520874
+      ],
+      "grad_ok": true
+    },
+    {
+      "model": "VNetLighter",
+      "loss": 0.21126580238342285,
+      "dice": [
+        0.7887341976165771
+      ],
+      "grad_ok": true
+    },
+    {
+      "model": "VNetLight",
+      "loss": 0.19215643405914307,
+      "dice": [
+        0.8078435659408569
+      ],
+      "grad_ok": true
+    },
+    {
+      "model": "OACNNs",
+      "loss": 0.254643976688385,
+      "dice": [
+        0.745356023311615
+      ],
+      "grad_ok": true
+    },
+    {
+      "model": "OACNNsInterleaved",
+      "loss": 0.33281707763671875,
+      "dice": [
+        0.6671829223632812
+      ],
+      "grad_ok": true
+    }
+  ]
+}

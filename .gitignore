@@ -11,3 +11,23 @@ __pycache__/
 # Generated TensorBoard event files
 **/tensorboard/
 events.out.tfevents.*
+
+# Large generated datasets and model outputs
+data_for_test/out/
+data_for_test/**/gv/
+data_for_test/**/pvv/
+data_for_test/**/00_color/
+*.bin.gz
+*.png
+*.mp4
+*.mkv
+*.pth
+*.pt
+*.ckpt
+
+# Large render/video outputs
+results/unity_renders/
+results/videos/
+
+# Local logs can be large; keep only selected summaries if needed
+logs/
