@@ -1,0 +1,4 @@
+scene,d,model,backend,model_depth,epochs,fn_rate,fp_rate,ssim
+RobotLab,8,OACNNsInterleaved,fvdb,3,200,0.000452,0.007725,0.985851
+RobotLab,16,OACNNsInterleaved,fvdb,3,200,0.000348,0.008183,0.987059
+RobotLab,32,OACNNsInterleaved,fvdb,3,200,0.004555,0.009750,0.987162

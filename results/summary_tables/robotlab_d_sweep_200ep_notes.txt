@@ -1,0 +1,17 @@
+RobotLab d-sweep, OACNNsInterleaved fVDB backend.
+
+Training setup:
+- Dataset: RobotLab r30
+- Model: OACNNsInterleaved
+- Backend: fVDB
+- Model depth: 3
+- Epochs: 200
+- Loss: dice,no_guess
+- Loss weights: 0.99,0.01
+- Dice alpha: 0.001
+- Learning rate: 0.001
+- Batch size: 3
+- Tested interleaving factors d: 8, 16, 32
+
+Interpretation:
+d=16 is the best overall trade-off. It has the lowest fn_rate and nearly the same SSIM as d=32. d=32 has marginally higher SSIM, but much worse fn_rate.
