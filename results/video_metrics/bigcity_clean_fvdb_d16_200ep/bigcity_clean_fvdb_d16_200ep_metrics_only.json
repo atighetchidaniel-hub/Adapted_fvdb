@@ -1,0 +1,26 @@
+{
+  "backend": "fvdb",
+  "scene": "bigcity_clean",
+  "model": "OACNNsInterleaved",
+  "d": 16,
+  "epochs": 200,
+  "source_summary": "results/summary_tables/bigcity_clean_fvdb_vs_spconv_d16_200ep_metrics.json",
+  "metrics": {
+    "pred_dir": "data_for_test/out/OACNNsInterleaved_bc_clean_dice_20260508-135312_20260508-130516_bc_clean_fvdb_d16_200ep-20260508-130516_bc_clean_fvdb_d16_200ep_infer_pJWnWKgF/inference/0/00_color",
+    "eval_stats": "data_for_test/out/OACNNsInterleaved_bc_clean_dice_20260508-135312_20260508-130516_bc_clean_fvdb_d16_200ep-20260508-130516_bc_clean_fvdb_d16_200ep_infer_pJWnWKgF/eval_stats.csv",
+    "video_metrics": "results/video_metrics/bigcity_clean_fvdb_d16_200ep/bigcity_fvdb_d16_200ep_results.json",
+    "fn_rate": 0.0012530599859618924,
+    "fp_rate": 0.0043952463761202,
+    "dice": 0.991689515482519,
+    "num_frames": 3598,
+    "raw_mae_mean": 0.00012760555992061937,
+    "raw_rmse_mean": 0.004102134482641994,
+    "raw_ssim_mean": 0.9989506160470762,
+    "raw_ssim_min": 0.9751418232917786,
+    "raw_ssim_max": 1.0,
+    "video_ssim_all": 0.979839,
+    "video_psnr_avg": 42.537567,
+    "video_vmaf": 96.001006,
+    "video_flip_avg": 0.03952160437591374
+  }
+}
