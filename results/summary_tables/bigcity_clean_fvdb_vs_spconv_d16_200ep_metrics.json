@@ -1,0 +1,45 @@
+{
+  "scene": "BigCity clean",
+  "model": "OACNNsInterleaved",
+  "d": 16,
+  "epochs": 200,
+  "reference": "GV_PVV_BigCity/bigcity/r30/predicted_unity_pvv/00_color",
+  "runs": {
+    "fvdb": {
+      "pred_dir": "data_for_test/out/OACNNsInterleaved_bc_clean_dice_20260508-135312_20260508-130516_bc_clean_fvdb_d16_200ep-20260508-130516_bc_clean_fvdb_d16_200ep_infer_pJWnWKgF/inference/0/00_color",
+      "eval_stats": "data_for_test/out/OACNNsInterleaved_bc_clean_dice_20260508-135312_20260508-130516_bc_clean_fvdb_d16_200ep-20260508-130516_bc_clean_fvdb_d16_200ep_infer_pJWnWKgF/eval_stats.csv",
+      "video_metrics": "results/video_metrics/bigcity_clean_fvdb_d16_200ep/bigcity_fvdb_d16_200ep_results.json",
+      "fn_rate": 0.0012530599859618924,
+      "fp_rate": 0.0043952463761202,
+      "dice": 0.991689515482519,
+      "num_frames": 3598,
+      "raw_mae_mean": 0.00012760555992061937,
+      "raw_rmse_mean": 0.004102134482641994,
+      "raw_ssim_mean": 0.9989506160470762,
+      "raw_ssim_min": 0.9751418232917786,
+      "raw_ssim_max": 1.0,
+      "video_ssim_all": 0.979839,
+      "video_psnr_avg": 42.537567,
+      "video_vmaf": 96.001006,
+      "video_flip_avg": 0.03952160437591374
+    },
+    "spconv": {
+      "pred_dir": "data_for_test/out_spconv/OACNNsInterleaved_bc_clean_dice_20260508-143934_20260508-130516_bc_clean_spconv_d16_200ep-20260508-130516_bc_clean_spconv_d16_200ep_infer_QGuL0E7h/inference/0/00_color",
+      "eval_stats": "data_for_test/out_spconv/OACNNsInterleaved_bc_clean_dice_20260508-143934_20260508-130516_bc_clean_spconv_d16_200ep-20260508-130516_bc_clean_spconv_d16_200ep_infer_QGuL0E7h/eval_stats.csv",
+      "video_metrics": "results/video_metrics/bigcity_clean_spconv_d16_200ep/bigcity_spconv_d16_200ep_results.json",
+      "fn_rate": 0.0011870238772878309,
+      "fp_rate": 0.004555402153181152,
+      "dice": 0.9900667704257768,
+      "num_frames": 3597,
+      "raw_mae_mean": 0.0165821780972778,
+      "raw_rmse_mean": 0.04440191151010229,
+      "raw_ssim_mean": 0.8130759771147933,
+      "raw_ssim_min": 0.37089577317237854,
+      "raw_ssim_max": 1.0,
+      "video_ssim_all": 0.979887,
+      "video_psnr_avg": 42.650893,
+      "video_vmaf": 96.057148,
+      "video_flip_avg": 0.03943283966432015
+    }
+  }
+}

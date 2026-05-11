@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/OACNNsInterleaved_industrial_r30_dice_20260507-234124_20260507-183514_industrial_fvdb_oacnn_interleaved_d8_depth3_200ep-20260507-183514_industrial_fvdb_oacnn_interleaved_d8_depth3_200ep_infer_BNFMmQSR/eval_stats.csv
+Mean voxel counts:
+  TP:  62759.230937
+  FN:  23.126362
+  FP:  25458.727669
+  TN:  16688974.915033
+  GTP = TP + FN: 62782.357298
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.000368 (0.037%)
+  FPR = FP / GTP: 0.405508 (40.551%)
+  Predicted-visible / GTP: 1.405139
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.831246
+  weighted Dice reported by runner: 0.997605
+  repo fn_rate = FN / (FN + TP): 0.000371
+  repo fp_rate = FP / (FP + TN): 0.001523
+  repo fp_ratio = FP / GV: 0.185026
+  gv_ratio: 0.652469
+  loss: 0.002395

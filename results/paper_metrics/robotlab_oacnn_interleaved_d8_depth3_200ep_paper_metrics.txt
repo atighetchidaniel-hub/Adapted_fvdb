@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/OACNNsInterleaved_robotlab_r30_dice_20260507-131839_robotlab_oacnn_interleaved_d8_depth3_200ep-robotlab_oacnn_interleaved_d8_depth3_200ep_infer_WnS73SI3/eval_stats.csv
+Mean voxel counts:
+  TP:  113826.000000
+  FN:  51.441860
+  FP:  128728.542636
+  TN:  16534610.015504
+  GTP = TP + FN: 113877.441860
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.000452 (0.045%)
+  FPR = FP / GTP: 1.130413 (113.041%)
+  Predicted-visible / GTP: 2.129961
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.638697
+  weighted Dice reported by runner: 0.993438
+  repo fn_rate = FN / (FN + TP): 0.000452
+  repo fp_rate = FP / (FP + TN): 0.007725
+  repo fp_ratio = FP / GV: 0.426964
+  gv_ratio: 0.804268
+  loss: 0.006562

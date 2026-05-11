@@ -1,0 +1,63 @@
+2026-05-08 16:16:35,888 - INFO - Processing videos:
+2026-05-08 16:16:35,888 - INFO -   Reference: results/video_metrics/sponza_r30_gt_video_vs_png/sponza_r30_png_encoded_reference.mp4
+2026-05-08 16:16:35,888 - INFO -   Distorted: results/video_metrics/sponza_r30_gt_video_vs_png/sponza_r30_unity_direct_render.mkv
+2026-05-08 16:16:35,888 - INFO - Running comprehensive metrics evaluation...
+2026-05-08 16:16:35,889 - INFO - Running FFmpeg for SSIM/PSNR/VMAF...
+2026-05-08 16:16:37,332 - ERROR - Error processing videos: FFmpeg failed:
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 11 (GCC)
+  configuration: --prefix=/tmp/atighedl_ffmpeg_vmaf_install --extra-cflags=-I/tmp/atighedl_ffmpeg_vmaf_install/include --extra-ldflags=-L/tmp/atighedl_ffmpeg_vmaf_install/lib --enable-gpl --enable-version3 --enable-libvmaf --disable-doc --disable-debug --disable-x86asm
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, matroska,webm, from '/home/atighedl/Adapted_fvdb/results/video_metrics/sponza_r30_gt_video_vs_png/sponza_r30_unity_direct_render.mkv':
+  Metadata:
+    ENCODER         : Lavf62.12.101
+  Duration: 00:01:00.00, start: 0.000000, bitrate: 232500 kb/s
+  Stream #0:0: Video: hevc (Rext), gbrp(pc, gbr/unknown/unknown, progressive), 973x571 [SAR 1:1 DAR 973:571], 60 fps, 60 tbr, 1k tbn
+      Metadata:
+        ENCODER         : Lavc62.28.101 hevc_nvenc
+        DURATION        : 00:01:00.000000000
+Input #1, mov,mp4,m4a,3gp,3g2,mj2, from '/home/atighedl/Adapted_fvdb/results/video_metrics/sponza_r30_gt_video_vs_png/sponza_r30_png_encoded_reference.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.3.100
+  Duration: 00:00:59.95, start: 0.000000, bitrate: 4853 kb/s
+  Stream #1:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 972x570, 4847 kb/s, 60 fps, 60 tbr, 15360 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc62.11.100 libx264
+Stream mapping:
+  Stream #0:0 (hevc) -> setpts:default
+  Stream #1:0 (h264) -> setpts:default
+  libvmaf:default -> Stream #0:0 (wrapped_avframe)
+  psnr:default -> Stream #0:1 (wrapped_avframe)
+  ssim:default -> Stream #0:2 (wrapped_avframe)
+Press [q] to stop, [?] for help
+[Parsed_libvmaf_4 @ 0x7f8934007080] input width must match.
+[Parsed_libvmaf_4 @ 0x7f8934007080] input height must match.
+[Parsed_libvmaf_4 @ 0x7f8934007080] Failed to configure input pad on Parsed_libvmaf_4
+[fc#0 @ 0x3ac8ec0] Error reinitializing filters!
+[fc#0 @ 0x3ac8ec0] Task finished with error code: -22 (Invalid argument)
+[fc#0 @ 0x3ac8ec0] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/wrapped_avframe @ 0x3ad9080] Could not open encoder before EOF
+[vost#0:1/wrapped_avframe @ 0x3ad5d00] Could not open encoder before EOF
+[vost#0:1/wrapped_avframe @ 0x3ad5d00] Task finished with error code: -22 (Invalid argument)
+[vost#0:1/wrapped_avframe @ 0x3ad5d00] Terminating thread with return code -22 (Invalid argument)
+[vost#0:2/wrapped_avframe @ 0x3aead00] Could not open encoder before EOF
+[vost#0:2/wrapped_avframe @ 0x3aead00] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/wrapped_avframe @ 0x3ad9080] Task finished with error code: -22 (Invalid argument)
+[vost#0:2/wrapped_avframe @ 0x3aead00] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/wrapped_avframe @ 0x3ad9080] Terminating thread with return code -22 (Invalid argument)
+[out#0/null @ 0x3ad8780] Nothing was written into output file, because at least one of its streams received no packets.
+frame=    0 fps=0.0 q=0.0 Lq=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+Conversion failed!
+

@@ -1,0 +1,21 @@
+eval_stats: data_for_test/out/OACNNsInterleaved_Sponza_r30_dice_20260508-074953_20260507-183514_Sponza_fvdb_oacnn_interleaved_d8_depth3_200ep-20260507-183514_Sponza_fvdb_oacnn_interleaved_d8_depth3_200ep_infer_Jo6wzblK/eval_stats.csv
+Mean voxel counts:
+  TP:  91515.601423
+  FN:  34.017794
+  FP:  69319.106762
+  TN:  16616347.274021
+  GTP = TP + FN: 91549.619217
+
+Paper-style voxel metrics:
+  FNR = FN / GTP: 0.000372 (0.037%)
+  FPR = FP / GTP: 0.757175 (75.718%)
+  Predicted-visible / GTP: 1.756804
+
+Additional repo metrics:
+  Standard Dice from thresholded counts: 0.725208
+  weighted Dice reported by runner: 0.997188
+  repo fn_rate = FN / (FN + TP): 0.000368
+  repo fp_rate = FP / (FP + TN): 0.004154
+  repo fp_ratio = FP / GV: 0.104150
+  gv_ratio: 0.241996
+  loss: 0.002812

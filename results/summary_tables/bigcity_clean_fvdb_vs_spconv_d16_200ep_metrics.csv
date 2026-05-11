@@ -1,0 +1,3 @@
+scene,backend,model,d,epochs,fn_rate,fp_rate,dice,raw_ssim,raw_mae,raw_rmse,video_ssim,video_psnr,video_vmaf,video_flip
+BigCity clean,fvdb,OACNNsInterleaved,16,200,0.00125306,0.00439525,0.99168952,0.99895062,0.00012761,0.00410213,0.97983900,42.53756700,96.00100600,0.03952160
+BigCity clean,spconv,OACNNsInterleaved,16,200,0.00118702,0.00455540,0.99006677,0.81307598,0.01658218,0.04440191,0.97988700,42.65089300,96.05714800,0.03943284
