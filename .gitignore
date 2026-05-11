@@ -31,3 +31,8 @@ results/videos/
 
 # Local logs can be large; keep only selected summaries if needed
 logs/
+
+# Huge supervisor meeting lossless videos stored externally
+results/supervisor_meeting/robotlab_10epoch_testing/01_straight_render_videos/robotlab_gt_unity_video_even_lossless.mp4
+results/supervisor_meeting/robotlab_10epoch_testing/02_even_lossless_videos/robotlab_fvdb_d16_10ep_unity_video_even_lossless.mp4
+results/supervisor_meeting/robotlab_10epoch_testing/02_even_lossless_videos/robotlab_spconv_d16_10ep_unity_video_even_lossless.mp4
