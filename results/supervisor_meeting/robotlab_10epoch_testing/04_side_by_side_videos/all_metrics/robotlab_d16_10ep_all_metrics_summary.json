@@ -1,0 +1,157 @@
+{
+  "scene": "robotlab",
+  "model": "OACNNsInterleaved",
+  "d": 16,
+  "epochs": 10,
+  "notes": [
+    "Direct video metrics use Unity _rendering.mkv exports directly.",
+    "Fixed video metrics use even-dimension lossless-normalized videos so the repo script can generate side-by-side and diff videos.",
+    "Voxel metrics come from eval_stats.csv and include fp_rate, fn_rate, fp_ratio, gv_ratio, dice, and loss where available."
+  ],
+  "runs": {
+    "fvdb": {
+      "eval_stats_path": "data_for_test/out/OACNN_robo_fvdb_10epoch_d16/eval_stats.csv",
+      "voxel_metrics": {
+        "dice": {
+          "mean": 0.9860303314157235,
+          "std": 0.00039741334215846736,
+          "min": 0.9849023818969728,
+          "max": 0.9866528511047364
+        },
+        "loss": {
+          "mean": 0.01396966858427649,
+          "std": 0.0003974133421584648,
+          "min": 0.0133471488952636,
+          "max": 0.0150976181030273
+        },
+        "fp": {
+          "mean": 163067.72868217053,
+          "std": 12278.902227087487,
+          "min": 143066.0,
+          "max": 195220.0
+        },
+        "fn": {
+          "mean": 58.23255813953488,
+          "std": 20.231284417605483,
+          "min": 21.0,
+          "max": 119.0
+        },
+        "tn": {
+          "mean": 16500605.930232558,
+          "std": 15252.745385660313,
+          "min": 16456222.0,
+          "max": 16525567.0
+        },
+        "tp": {
+          "mean": 113484.10852713179,
+          "std": 3775.9577618638486,
+          "min": 107487.0,
+          "max": 126482.0
+        },
+        "fp_rate": {
+          "mean": 0.009785942365090462,
+          "std": 0.000738506610844244,
+          "min": 0.0085829477757215,
+          "max": 0.0117232603952288
+        },
+        "fn_rate": {
+          "mean": 0.0005121415817357,
+          "std": 0.00017483333754917044,
+          "min": 0.0001937251508934,
+          "max": 0.0010251991916447
+        },
+        "fp_ratio": {
+          "mean": 0.5402960176615752,
+          "std": 0.018209529036521382,
+          "min": 0.5019934773445129,
+          "max": 0.6004798412322998
+        },
+        "gv_ratio": {
+          "mean": 0.9175099892209667,
+          "std": 0.03103619023198532,
+          "min": 0.8541408181190491,
+          "max": 0.9651694297790528
+        }
+      },
+      "direct_unity_video_metrics": {},
+      "even_lossless_video_metrics": {
+        "ssim_all": 0.998503,
+        "psnr_avg": 48.523265,
+        "vmaf": 96.666082,
+        "flip_avg": 0.001803473362430547
+      }
+    },
+    "spconv": {
+      "eval_stats_path": "data_for_test/out_spconv/OACNN_robo_spconv_10epoch_d16/eval_stats.csv",
+      "voxel_metrics": {
+        "dice": {
+          "mean": 0.9860731298609298,
+          "std": 0.0003570123544852947,
+          "min": 0.985066533088684,
+          "max": 0.9869310259819032
+        },
+        "loss": {
+          "mean": 0.013926870139070208,
+          "std": 0.0003570123544852947,
+          "min": 0.0130689740180969,
+          "max": 0.0149334669113159
+        },
+        "fp": {
+          "mean": 155448.62790697673,
+          "std": 10070.354925682366,
+          "min": 137724.0,
+          "max": 187165.0
+        },
+        "fn": {
+          "mean": 99.71317829457364,
+          "std": 35.71046629632236,
+          "min": 43.0,
+          "max": 199.0
+        },
+        "tn": {
+          "mean": 16508225.031007752,
+          "std": 13108.185228451954,
+          "min": 16464001.0,
+          "max": 16531017.0
+        },
+        "tp": {
+          "mean": 113442.62790697675,
+          "std": 3771.9807360278387,
+          "min": 107453.0,
+          "max": 126359.0
+        },
+        "fp_rate": {
+          "mean": 0.009328693642403674,
+          "std": 0.0006059350758701079,
+          "min": 0.0082624116912484,
+          "max": 0.0112403538078069
+        },
+        "fn_rate": {
+          "mean": 0.0008768786912216813,
+          "std": 0.00030516212428349006,
+          "min": 0.0003856709809042,
+          "max": 0.001771597424522
+        },
+        "fp_ratio": {
+          "mean": 0.5155957246473594,
+          "std": 0.02167419713578452,
+          "min": 0.4619272351264953,
+          "max": 0.5779405236244202
+        },
+        "gv_ratio": {
+          "mean": 0.8926707903544108,
+          "std": 0.03737515666349365,
+          "min": 0.818268358707428,
+          "max": 0.9525160193443298
+        }
+      },
+      "direct_unity_video_metrics": {},
+      "even_lossless_video_metrics": {
+        "ssim_all": 0.99837,
+        "psnr_avg": 48.13669,
+        "vmaf": 96.489759,
+        "flip_avg": 0.0019161629718716237
+      }
+    }
+  }
+}
