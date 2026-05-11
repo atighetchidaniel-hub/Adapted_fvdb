@@ -89,4 +89,16 @@ python scripts/save_fvdb_visual_result.py --id 0
 
 This writes a side-by-side max-projection image to `results/visuals/`.
 
+## Unity Live-Demo Bridge
+
+The Unity bridge files for the live demo are stored under:
+
+```text
+unity_bridge/
+```
+
+That folder contains the Unity `NeuralPVSBridge.cs` component, the modified
+`PVSCameraController.cs` with `GenerateGVAndRenderNeuralPVV` mode, and the
+Python `unity_bridge_infer.py` script that predicts one PVV from one
+Unity-generated GV file.
 
