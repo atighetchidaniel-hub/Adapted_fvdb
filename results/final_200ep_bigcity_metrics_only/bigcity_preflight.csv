@@ -1,0 +1,4 @@
+scene,radius,path,gv_count,pvv_count,pred_count,first_id,last_id,missing_gv,missing_pvv,missing_pred,gv_pvv_match,pvv_pred_match,gt_video_exists,ok
+bigcity,r30,/var/tmp/atighedl_runs/canonical_data/FINAL_GVPVV/BIGCITY_FINAL/bigcity/r30,97,97,97,0,96,0,0,0,True,True,True,True
+bigcity,r60,/var/tmp/atighedl_runs/canonical_data/FINAL_GVPVV/BIGCITY_FINAL/bigcity/r60,55,55,55,0,54,0,0,0,True,True,True,True
+bigcity,r90,/var/tmp/atighedl_runs/canonical_data/FINAL_GVPVV/BIGCITY_FINAL/bigcity/r90,41,41,41,0,40,0,0,0,True,True,True,True
