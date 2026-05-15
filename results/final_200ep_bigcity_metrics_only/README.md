@@ -41,3 +41,11 @@ Rows included: `18 / 18 BigCity runs`
 - `runs/*`: per-run eval stats, timing logs, training logs, and training arguments.
 
 - `video_metrics/*`: video metric JSON/CSV/log files if already generated, excluding videos.
+
+
+## Added Video Metrics
+
+The folder now includes repository video metrics from Unity-rendered prediction videos:
+
+- `bigcity_200ep_all_metrics_merged.csv`: combined training/eval/timing metrics plus SSIM, PSNR, VMAF, and FLIP.
+- `video_metrics/`: per-run video metric JSON files and logs.
