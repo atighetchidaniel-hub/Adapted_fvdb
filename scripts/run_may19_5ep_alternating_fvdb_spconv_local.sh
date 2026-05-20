@@ -187,7 +187,7 @@ run_train() {
     --interleaver_r "$d" \
     --batchSz "$BATCH" \
     --nEpochs "$EPOCHS" \
-    --save_all_freq 999999 \
+    --save_all_freq "$EPOCHS" \
     --lr "$LR" \
     --opt adam \
     --loss dice,no_guess \
