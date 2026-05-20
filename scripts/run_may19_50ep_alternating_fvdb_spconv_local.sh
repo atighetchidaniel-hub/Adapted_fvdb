@@ -89,6 +89,7 @@ make_filtered_dataset() {
   python - <<PY
 from pathlib import Path
 import os
+import sys
 
 src = Path("$src")
 dst = Path("$dst")
@@ -108,7 +109,7 @@ for _, gv, pvv in pairs:
     os.symlink(gv, dst / "gv" / gv.name)
     os.symlink(pvv, dst / "pvv" / pvv.name)
 
-print(f"Filtered {src.name}: {len(pairs)} valid pairs", flush=True)
+print(f"Filtered {src.name}: {len(pairs)} valid pairs", file=sys.stderr, flush=True)
 if len(pairs) < 10:
     raise SystemExit(f"Too few valid pairs for {src}")
 PY
