@@ -321,8 +321,8 @@ DATASET="$(make_scene_dataset "$SCENE_SRC" "$SCENE_NAME")"
 # shellcheck source=/dev/null
 source "$CONDA_SH"
 
-FVDB_EXP_DIR="${FVDB_EXP_DIR:-$(latest_exp_dir "$FVDB_OUT" "fvdb")}"
-SPCONV_EXP_DIR="${SPCONV_EXP_DIR:-$(latest_exp_dir "$SPCONV_OUT" "spconv")}"
+FVDB_EXP_DIR="${FVDB_EXP_DIR:-$(latest_exp_dir "$FVDB_OUT" "fvdb" || true)}"
+SPCONV_EXP_DIR="${SPCONV_EXP_DIR:-$(latest_exp_dir "$SPCONV_OUT" "spconv" || true)}"
 
 if [ -z "$FVDB_EXP_DIR" ] || [ ! -d "$FVDB_EXP_DIR" ]; then
   echo "ERROR: could not find fVDB $RADIUS d$D ${EPOCHS}ep experiment with a checkpoint in $FVDB_OUT" >&2
