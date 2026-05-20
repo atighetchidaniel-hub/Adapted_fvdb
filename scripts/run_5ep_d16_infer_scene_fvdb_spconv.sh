@@ -115,6 +115,31 @@ make_scene_dataset() {
   echo "$dataset"
 }
 
+checkpoint_suffix() {
+  local exp_dir="$1"
+  local exp_name="$2"
+
+  if [ -f "$exp_dir/${exp_name}_BEST.pth" ]; then
+    echo ""
+    return
+  fi
+
+  if [ -f "$exp_dir/${exp_name}_last_epoch.pth" ]; then
+    echo "last_epoch"
+    return
+  fi
+
+  local latest_epoch
+  latest_epoch="$({ find "$exp_dir" -maxdepth 1 -type f -name "${exp_name}_*_epoch.pth" 2>/dev/null || true; } | sed -E 's/.*_([0-9]+)_epoch\.pth/\1 &/' | sort -n | tail -1 | cut -d' ' -f2-)"
+
+  if [ -n "$latest_epoch" ] && [ -f "$latest_epoch" ]; then
+    basename "$latest_epoch" | sed -E "s/^${exp_name}_(.*)\.pth$/\1/"
+    return
+  fi
+
+  echo "ERROR_NO_CHECKPOINT"
+}
+
 run_infer() {
   local backend="$1"
   local repo="$2"
@@ -128,13 +153,20 @@ run_infer() {
   exp_name="$(basename "$exp_dir")"
   local tag="${RADIUS}_d${D}_${EPOCHS}ep_${backend}_to_${scene_name}"
   local log="$LOG_DIR/infer_${scene_name}_${backend}_${RADIUS}_d${D}_${EPOCHS}ep.log"
+  local ckpt_suffix
+  ckpt_suffix="$(checkpoint_suffix "$exp_dir" "$exp_name")"
 
-  require_path "$exp_dir/${exp_name}_BEST.pth" "$backend BEST checkpoint"
+  if [ "$ckpt_suffix" = "ERROR_NO_CHECKPOINT" ]; then
+    echo "ERROR: no checkpoint found for $backend in $exp_dir" >&2
+    echo "Expected one of: ${exp_name}_BEST.pth, ${exp_name}_last_epoch.pth, or ${exp_name}_*_epoch.pth" >&2
+    exit 1
+  fi
 
   echo "============================================================"
   echo "START INFER"
   echo "backend=$backend"
   echo "exp=$exp_name"
+  echo "ckpt_suffix=${ckpt_suffix:-BEST}"
   echo "dataset=$dataset"
   echo "log=$log"
   echo "============================================================"
@@ -151,6 +183,10 @@ run_infer() {
     --exp_name "$exp_name"
     --infer_tag "$tag"
   )
+
+  if [ -n "$ckpt_suffix" ]; then
+    args+=(--ckpt_suffix "$ckpt_suffix")
+  fi
 
   if [ "$N_FRAMES" != "0" ]; then
     args+=(--n_frames "$N_FRAMES")
