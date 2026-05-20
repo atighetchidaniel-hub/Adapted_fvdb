@@ -32,6 +32,7 @@ BATCH="${BATCH:-3}"
 DEPTH="${DEPTH:-3}"
 Z_SIZE="${Z_SIZE:-256}"
 TIMING_N_FRAMES="${TIMING_N_FRAMES:-0}" # 0 means full scene density pass.
+OPT_INFER_EXTRA_ARGS="${OPT_INFER_EXTRA_ARGS:-}"
 
 DATA_ROOT="$RESULT_ROOT/data"
 OUT_DIR="$RESULT_ROOT/fvdb_out"
@@ -202,6 +203,9 @@ run_timing() {
   echo "exp=$exp_name"
   echo "dataset=$dataset"
   echo "ckpt_suffix=${ckpt_suffix:-BEST}"
+  if [ "$label" = "optimized" ] && [ -n "$OPT_INFER_EXTRA_ARGS" ]; then
+    echo "extra_args=$OPT_INFER_EXTRA_ARGS"
+  fi
   echo "log=$log"
   echo "============================================================"
 
@@ -225,6 +229,11 @@ run_timing() {
 
   if [ "$TIMING_N_FRAMES" != "0" ]; then
     args+=(--n_frames "$TIMING_N_FRAMES")
+  fi
+
+  if [ "$label" = "optimized" ] && [ -n "$OPT_INFER_EXTRA_ARGS" ]; then
+    read -r -a extra_args <<< "$OPT_INFER_EXTRA_ARGS"
+    args+=("${extra_args[@]}")
   fi
 
   "${args[@]}" 2>&1 | tee "$log"
