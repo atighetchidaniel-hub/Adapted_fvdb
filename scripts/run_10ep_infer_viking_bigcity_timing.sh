@@ -311,6 +311,7 @@ from pathlib import Path
 summary_csv, scene, radius, d, backend, output_dir, timing_log = sys.argv[1:]
 output = Path(output_dir)
 stats_path = output / "eval_stats.csv"
+eval_log_path = output / "eval_log.csv"
 pred_folder = output / "inference" / "0"
 timing_path = Path(timing_log)
 
@@ -322,22 +323,38 @@ timing_keys = [
     "density_mean", "density_std", "density_min", "density_max",
 ]
 
-rows = list(csv.DictReader(stats_path.open(newline="")))
+stats_rows = list(csv.DictReader(stats_path.open(newline="")))
+eval_rows = list(csv.DictReader(eval_log_path.open(newline=""))) if eval_log_path.exists() else []
+predicted_count = len(list(pred_folder.glob("*_predicted_pvv.bin.gz"))) if pred_folder.exists() else 0
+frame_count = len(eval_rows) or predicted_count
 
 record = {
     "scene": scene,
     "radius": radius,
     "d": d,
     "backend": backend,
-    "frames": len(rows),
+    "frames": frame_count,
     "output_dir": str(output),
     "predicted_pvv_folder": str(pred_folder),
     "timing_log": str(timing_path),
 }
 
+stats_by_metric = {}
+if stats_rows and {"Metric", "Mean"}.issubset(stats_rows[0].keys()):
+    for row in stats_rows:
+        metric = row.get("Metric", "")
+        if metric:
+            stats_by_metric[metric] = row
+
+def stat_value(row, name):
+    try:
+        return float(row[name])
+    except Exception:
+        return math.nan
+
 def vals_for(key):
     vals = []
-    for row in rows:
+    for row in eval_rows:
         try:
             vals.append(float(row[key]))
         except Exception:
@@ -345,17 +362,24 @@ def vals_for(key):
     return vals
 
 for key in metrics:
-    vals = vals_for(key)
-    if vals:
-        record[f"{key}_mean"] = stats.mean(vals)
-        record[f"{key}_std"] = stats.pstdev(vals) if len(vals) > 1 else 0.0
-        record[f"{key}_min"] = min(vals)
-        record[f"{key}_max"] = max(vals)
+    if key in stats_by_metric:
+        row = stats_by_metric[key]
+        record[f"{key}_mean"] = stat_value(row, "Mean")
+        record[f"{key}_std"] = stat_value(row, "Std")
+        record[f"{key}_min"] = stat_value(row, "Min")
+        record[f"{key}_max"] = stat_value(row, "Max")
     else:
-        record[f"{key}_mean"] = math.nan
-        record[f"{key}_std"] = math.nan
-        record[f"{key}_min"] = math.nan
-        record[f"{key}_max"] = math.nan
+        vals = vals_for(key)
+        if vals:
+            record[f"{key}_mean"] = stats.mean(vals)
+            record[f"{key}_std"] = stats.pstdev(vals) if len(vals) > 1 else 0.0
+            record[f"{key}_min"] = min(vals)
+            record[f"{key}_max"] = max(vals)
+        else:
+            record[f"{key}_mean"] = math.nan
+            record[f"{key}_std"] = math.nan
+            record[f"{key}_min"] = math.nan
+            record[f"{key}_max"] = math.nan
 
 timing_text = timing_path.read_text(errors="replace") if timing_path.exists() else ""
 for key in timing_keys:
