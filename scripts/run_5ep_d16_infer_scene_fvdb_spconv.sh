@@ -81,7 +81,26 @@ latest_exp_dir() {
   local out_dir="$1"
   local backend="$2"
   local pattern="*synthetic_may19_${RADIUS}_${backend}_d${D}_b${BATCH}_depth${DEPTH}_${EPOCHS}ep*"
-  find "$out_dir" -maxdepth 1 -type d -name "$pattern" | sort | tail -1
+  local dir
+
+  while IFS= read -r dir; do
+    if find "$dir" -maxdepth 1 -type f -name '*.pth' | grep -q .; then
+      echo "$dir"
+      return 0
+    fi
+  done < <(find "$out_dir" -maxdepth 1 -type d -name "$pattern" | sort -r)
+
+  return 1
+}
+
+print_exp_candidates() {
+  local out_dir="$1"
+  local backend="$2"
+  local pattern="*synthetic_may19_${RADIUS}_${backend}_d${D}_b${BATCH}_depth${DEPTH}_${EPOCHS}ep*"
+  echo "Matching $backend experiment folders:" >&2
+  find "$out_dir" -maxdepth 1 -type d -name "$pattern" | sort | tail -10 >&2 || true
+  echo "Matching $backend checkpoint files:" >&2
+  find "$out_dir" -path "*$pattern*" -type f -name '*.pth' | sort | tail -20 >&2 || true
 }
 
 make_scene_dataset() {
@@ -306,12 +325,14 @@ FVDB_EXP_DIR="${FVDB_EXP_DIR:-$(latest_exp_dir "$FVDB_OUT" "fvdb")}"
 SPCONV_EXP_DIR="${SPCONV_EXP_DIR:-$(latest_exp_dir "$SPCONV_OUT" "spconv")}"
 
 if [ -z "$FVDB_EXP_DIR" ] || [ ! -d "$FVDB_EXP_DIR" ]; then
-  echo "ERROR: could not find fVDB $RADIUS d$D ${EPOCHS}ep experiment in $FVDB_OUT" >&2
+  echo "ERROR: could not find fVDB $RADIUS d$D ${EPOCHS}ep experiment with a checkpoint in $FVDB_OUT" >&2
+  print_exp_candidates "$FVDB_OUT" "fvdb"
   exit 1
 fi
 
 if [ -z "$SPCONV_EXP_DIR" ] || [ ! -d "$SPCONV_EXP_DIR" ]; then
-  echo "ERROR: could not find spconv $RADIUS d$D ${EPOCHS}ep experiment in $SPCONV_OUT" >&2
+  echo "ERROR: could not find spconv $RADIUS d$D ${EPOCHS}ep experiment with a checkpoint in $SPCONV_OUT" >&2
+  print_exp_candidates "$SPCONV_OUT" "spconv"
   exit 1
 fi
 
