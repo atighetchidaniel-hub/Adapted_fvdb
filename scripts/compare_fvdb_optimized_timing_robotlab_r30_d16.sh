@@ -54,6 +54,29 @@ require_path() {
   fi
 }
 
+discover_opt_repo() {
+  if [ -f "$OPT_REPO/infer.py" ]; then
+    echo "$OPT_REPO"
+    return 0
+  fi
+
+  local candidate
+  for candidate in \
+    /home/atighedl/Adapted_fvdb_learned_ops_lab \
+    /home/atighedl/Adapted_fvdb_optimization_lab \
+    /home/atighedl/*learned*ops* \
+    /home/atighedl/*optimization*fvdb* \
+    /home/atighedl/*Adapted*fvdb*learned* \
+    /home/atighedl/*Adapted*fvdb*optimization*; do
+    if [ -f "$candidate/infer.py" ]; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 safe_name() {
   python - "$1" <<'PY'
 import re
@@ -275,6 +298,14 @@ PY
 
 require_path "$CONDA_SH" "conda activation script"
 require_path "$BASE_REPO/infer.py" "baseline infer.py"
+OPT_REPO="$(discover_opt_repo || true)"
+if [ -z "$OPT_REPO" ]; then
+  echo "ERROR: optimized lab infer.py not found." >&2
+  echo "Set OPT_REPO=/path/to/Adapted_fvdb_learned_ops_lab and rerun." >&2
+  echo "Quick search command:" >&2
+  echo "find /home/atighedl -maxdepth 2 -name infer.py | grep -Ei 'learned|optim|fvdb'" >&2
+  exit 1
+fi
 require_path "$OPT_REPO/infer.py" "optimized lab infer.py"
 require_path "$CANONICAL_ROOT" "CANONICAL_ROOT"
 require_path "$OUT_DIR" "fVDB output root"
