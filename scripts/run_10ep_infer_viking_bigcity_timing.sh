@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Run completed May19 10-epoch synthetic runs on Viking and BigCity.
+# Run completed May19 10-epoch synthetic runs on RobotLab and BigCity.
 #
 # Defaults:
 #   radii:    r30 r60
 #   d values: 16 8 32
 #   backends: fvdb spconv
-#   scenes:   viking bigcity
+#   scenes:   robotlab bigcity
 #
 # For each completed training run this performs:
 #   1. normal inference, saving eval_stats.csv and predicted PVVs
@@ -31,7 +31,7 @@ CONDA_SH="${CONDA_SH:-$HOME/miniforge3/etc/profile.d/conda.sh}"
 RADII="${RADII:-r30 r60}"
 D_VALUES="${D_VALUES:-16 8 32}"
 BACKENDS="${BACKENDS:-fvdb spconv}"
-SCENE_KEYS="${SCENE_KEYS:-viking bigcity}"
+SCENE_KEYS="${SCENE_KEYS:-robotlab bigcity}"
 
 EPOCHS="${EPOCHS:-10}"
 BATCH="${BATCH:-3}"
@@ -47,9 +47,9 @@ SUMMARY_DIR="$RESULT_ROOT/summaries"
 LOG_DIR="$RESULT_ROOT/logs"
 
 STAMP="$(date +%Y%m%d_%H%M%S)"
-SUMMARY_CSV="$SUMMARY_DIR/infer_viking_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.csv"
-SUMMARY_MD="$SUMMARY_DIR/infer_viking_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.md"
-MASTER_LOG="$LOG_DIR/infer_viking_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.log"
+SUMMARY_CSV="$SUMMARY_DIR/infer_robotlab_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.csv"
+SUMMARY_MD="$SUMMARY_DIR/infer_robotlab_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.md"
+MASTER_LOG="$LOG_DIR/infer_robotlab_bigcity_r30_r60_${EPOCHS}ep_timing_${STAMP}.log"
 
 mkdir -p "$DATA_ROOT/datasets" "$SUMMARY_DIR" "$LOG_DIR"
 
@@ -421,7 +421,7 @@ def fmt(value, places=6):
         return str(value)
 
 lines = []
-lines.append("# 10ep Viking/BigCity Inference Timing Summary")
+lines.append("# 10ep RobotLab/BigCity Inference Timing Summary")
 lines.append("")
 lines.append("| Scene | Radius | d | Backend | Frames | Dice | FP rate | FN rate | GV ratio | Infer ms | Pure ms | Peak MB |")
 lines.append("|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|")
