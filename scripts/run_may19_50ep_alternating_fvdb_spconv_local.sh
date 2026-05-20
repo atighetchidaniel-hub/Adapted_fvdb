@@ -71,8 +71,15 @@ make_filtered_dataset() {
   require_path "$src/pvv" "$radius pvv folder"
 
   if [ -d "$dst/gv" ] && [ -d "$dst/pvv" ]; then
-    echo "$ds"
-    return
+    local existing_gv
+    local existing_pvv
+    existing_gv="$(find -L "$dst/gv" -type f -name '*_gv.bin.gz' 2>/dev/null | wc -l)"
+    existing_pvv="$(find -L "$dst/pvv" -type f -name '*_pvv.bin.gz' 2>/dev/null | wc -l)"
+    if [ "$existing_gv" -ge 10 ] && [ "$existing_pvv" -ge 10 ]; then
+      echo "$ds"
+      return
+    fi
+    echo "Existing filtered dataset $ds has GV=$existing_gv PVV=$existing_pvv; rebuilding it." >&2
   fi
 
   echo "Creating filtered dataset: $ds" >&2
