@@ -8,6 +8,7 @@ import torch.utils.benchmark as benchmark
 
 from modules.writer import TrainingLogger
 
+from losses.dice import SparseWeightedDiceLoss
 from utils.args import save_arguments
 from utils.train import prepare_data, save_checkpoint, save_volume, extract_data
 from utils.init import init_metric
@@ -53,6 +54,15 @@ class Runner:
             self.metrics = self.metrics.cuda()
         self.mode = mode
         self.start_time = time.time()
+        self.aux_recall_weight = float(getattr(args, "aux_recall_weight", 0.0) or 0.0)
+        self.aux_recall_criterion = None
+        if self.aux_recall_weight > 0:
+            if args.backend != "fvdb":
+                raise ValueError("--aux_recall_weight is currently only supported for backend=fvdb")
+            self.aux_recall_criterion = SparseWeightedDiceLoss(
+                classes=args.classes,
+                alpha=float(getattr(args, "aux_recall_alpha", 0.001)),
+            ).to(self.device)
 
         self.forward_times = {
             "total": 0,
@@ -511,7 +521,35 @@ class Runner:
         else:
             loss, metrics = self._call_criterion(
                 self.criterion, pred, target, extras)
+
+        aux_loss, aux_metrics = self._compute_aux_recall_loss(target, extras)
+        if aux_loss is not None:
+            loss = loss + aux_loss * self.aux_recall_weight
+            metrics.update(aux_metrics)
+            metrics["loss"] = loss.detach().item()
         return loss, metrics
+
+    def _compute_aux_recall_loss(self, target: torch.Tensor, extras: dict):
+        if self.aux_recall_criterion is None:
+            return None, {}
+
+        aux_outputs = getattr(self._base_model(), "aux_outputs", None)
+        if not aux_outputs:
+            return None, {}
+
+        losses = []
+        for aux_pred in aux_outputs:
+            aux_loss, _ = self.aux_recall_criterion(aux_pred, target, extras)
+            losses.append(aux_loss)
+
+        if not losses:
+            return None, {}
+
+        aux_loss = torch.stack(losses).mean()
+        return aux_loss, {
+            "loss_aux_recall": aux_loss.detach().item(),
+            "aux_recall_count": len(losses),
+        }
 
     def _call_criterion(self, crit, pred, target, extras, record_loss_name=False):
         metrics = {}

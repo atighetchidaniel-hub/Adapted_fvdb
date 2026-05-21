@@ -49,7 +49,8 @@ def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
         from models.oacnn import OACNNs
         model = OACNNs(in_channels=in_channels, classes=classes,
                        backend_type=backend_type, depth=model_depth,
-                       dec_depth=getattr(args, "dec_depth", None))
+                       dec_depth=getattr(args, "dec_depth", None),
+                       aux_recall_weight=getattr(args, "aux_recall_weight", 0.0))
     elif model_type == 'OACNNsInterleaved':
         if backend_type != 'fvdb':
             raise ValueError("OACNNsInterleaved is now only supported with the fvdb backend.")
@@ -57,7 +58,8 @@ def init_model(model_type: str = 'VNet', backend_type: str = 'torchnn',
         model = OACNNsInterleaved(
             in_channels=in_channels, classes=classes, backend_type=backend_type,
             depth=model_depth, r=args.interleaver_r if args else 2,
-            dec_depth=getattr(args, "dec_depth", None))
+            dec_depth=getattr(args, "dec_depth", None),
+            aux_recall_weight=getattr(args, "aux_recall_weight", 0.0))
     else:
         raise ValueError('Model not supported')
 

@@ -396,6 +396,7 @@ class _OACNNs(nn.Module):
         point_grid_size=[[16, 32, 64], [8, 16, 24], [4, 8, 12], [2, 4, 6]],
         dec_depth=[2, 2, 2, 2],
         backend_type="fvdb",
+        aux_recall_weight=0.0,
     ):
         super().__init__()
         if backend_type != "fvdb":
@@ -408,10 +409,17 @@ class _OACNNs(nn.Module):
         self.num_stages = len(enc_channels)
         self.embed_channels = embed_channels
         self.backend_type = "fvdb"
+        self.aux_recall_enabled = aux_recall_weight > 0
+        self.aux_outputs = []
         norm_fn = partial(nn.BatchNorm1d, eps=1e-3, momentum=0.01)
 
         self.stem = FvdbStem(in_channels, embed_channels)
         self.final = FvdbPointwise(dec_channels[0], num_classes, bias=True)
+        self.aux_final = (
+            FvdbPointwise(dec_channels[0], num_classes, bias=True)
+            if self.aux_recall_enabled
+            else None
+        )
 
         self.enc = nn.ModuleList()
         self.dec = nn.ModuleList()
@@ -465,6 +473,7 @@ class _OACNNs(nn.Module):
             _ACTIVE_FVDB_PLAN_CACHE = {}
 
         try:
+            self.aux_outputs = []
             x = self._prepare_input(input)
             x = self.stem(x)
             skips = [x]
@@ -475,6 +484,8 @@ class _OACNNs(nn.Module):
             for i in reversed(range(self.num_stages)):
                 skip = skips.pop(-1)
                 x = self.dec[i](x, skip)
+            if self.training and self.aux_final is not None:
+                self.aux_outputs = [self.aux_final(x)]
             return self.final(x)
         finally:
             if owns_plan_cache:
@@ -492,7 +503,15 @@ class _OACNNs(nn.Module):
 
 
 class OACNNs(_OACNNs):
-    def __init__(self, in_channels=1, classes=1, backend_type="fvdb", depth=3, dec_depth=None):
+    def __init__(
+        self,
+        in_channels=1,
+        classes=1,
+        backend_type="fvdb",
+        depth=3,
+        dec_depth=None,
+        aux_recall_weight=0.0,
+    ):
         enc_num_ref = [16, 16, 16, 16]
         enc_channels = [64, 64, 128, 256]
         groups = [2, 4, 8, 16]
@@ -524,11 +543,21 @@ class OACNNs(_OACNNs):
             point_grid_size=point_grid_size,
             dec_depth=dec_depth,
             backend_type=backend_type,
+            aux_recall_weight=aux_recall_weight,
         )
 
 
 class OACNNsInterleaved(_OACNNs):
-    def __init__(self, in_channels=1, classes=1, r=2, backend_type="fvdb", depth=3, dec_depth=None):
+    def __init__(
+        self,
+        in_channels=1,
+        classes=1,
+        r=2,
+        backend_type="fvdb",
+        depth=3,
+        dec_depth=None,
+        aux_recall_weight=0.0,
+    ):
         self.r = r
         interleaved_in_channels = in_channels * (self.r ** 3)
         interleaved_classes = classes * (self.r ** 3)
@@ -564,6 +593,7 @@ class OACNNsInterleaved(_OACNNs):
             point_grid_size=point_grid_size,
             dec_depth=dec_depth,
             backend_type=backend_type,
+            aux_recall_weight=aux_recall_weight,
         )
         self.interleaver = Interleaver(self.r)
         self.deinterleaver = Deinterleaver(self.r)
@@ -578,4 +608,6 @@ class OACNNsInterleaved(_OACNNs):
     def forward(self, input, data={}):
         x = self.interleaver(input)
         out = self.forward_interleaved(x, data)
+        if self.aux_outputs:
+            self.aux_outputs = [self.deinterleave_output(aux, output_shape=input.shape) for aux in self.aux_outputs]
         return self.deinterleave_output(out)

@@ -202,6 +202,7 @@ def main():
     dec_depth = args.dec_depth
     if dec_depth is None and train_args.get("dec_depth") is not None:
         dec_depth = int(train_args["dec_depth"])
+    aux_recall_weight = float(train_args.get("aux_recall_weight", 0.0) or 0.0)
     interleaver_r = args.interleaver_r or int(train_args.get("interleaver_r", 16))
     in_channels = args.in_channels or int(train_args.get("inChannels", 1))
     classes = args.classes or int(train_args.get("classes", 1))
@@ -209,7 +210,11 @@ def main():
 
     init_cuda(args.device.startswith("cuda"), cupy=False, seed=0, inference=True)
 
-    model_args = SimpleNamespace(interleaver_r=interleaver_r, dec_depth=dec_depth)
+    model_args = SimpleNamespace(
+        interleaver_r=interleaver_r,
+        dec_depth=dec_depth,
+        aux_recall_weight=aux_recall_weight,
+    )
     model = init_model(
         model_name,
         "fvdb",
@@ -232,6 +237,7 @@ def main():
     print(f"threshold:    {args.threshold}")
     print(f"interleaver:  {interleaver_r}")
     print(f"dec_depth:    {dec_depth if dec_depth is not None else 2}")
+    print(f"aux_recall:   {aux_recall_weight}")
     print("")
 
     rows = []

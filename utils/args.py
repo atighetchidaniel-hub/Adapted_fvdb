@@ -51,6 +51,10 @@ def get_train_arguments():
     parser.add_argument('--model_depth', type=int, default=3)
     parser.add_argument('--dec_depth', type=int, default=None,
                         help='Override OACNN decoder fuse depth; default keeps the original depth of 2.')
+    parser.add_argument('--aux_recall_weight', type=float, default=0.0,
+                        help='Add fVDB OACNN auxiliary decoder recall loss during training when > 0.')
+    parser.add_argument('--aux_recall_alpha', type=float, default=0.001,
+                        help='Tversky alpha for the auxiliary recall loss; lower values penalize false negatives more.')
     # Loss arguments
     parser.add_argument('--loss', type=str, default='dice')
     parser.add_argument('--loss_weights', type=str, default='')
@@ -144,6 +148,10 @@ def get_inference_arguments():
         infer_args.model_depth = 3
     if "dec_depth" not in infer_args:
         infer_args.dec_depth = None
+    if "aux_recall_weight" not in infer_args:
+        infer_args.aux_recall_weight = 0.0
+    if "aux_recall_alpha" not in infer_args:
+        infer_args.aux_recall_alpha = 0.001
     if "cache_size" not in infer_args:
         infer_args.cache_size = 0
     if "max_pool_size" not in infer_args:
