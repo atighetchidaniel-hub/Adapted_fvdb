@@ -510,7 +510,13 @@ class OACNNsInterleaved(_OACNNs):
         self.deinterleaver = Deinterleaver(self.r)
         self.apply(self._init_weights)
 
+    def forward_interleaved(self, input, data={}):
+        return super().forward(input, data)
+
+    def deinterleave_output(self, output, output_shape=None):
+        return self.deinterleaver(output)
+
     def forward(self, input, data={}):
         x = self.interleaver(input)
-        out = super().forward(x, data)
-        return self.deinterleaver(out)
+        out = self.forward_interleaved(x, data)
+        return self.deinterleave_output(out)

@@ -64,6 +64,23 @@ class Runner:
         if mode == 'train':
             save_arguments(args, args.save)
 
+    def _base_model(self):
+        return self.model.module if isinstance(self.model, torch.nn.DataParallel) else self.model
+
+    def _can_use_dense_model_entry(self):
+        """
+        OACNNsInterleaved can interleave the dense volume first and only then
+        build the smaller fVDB grid. This avoids constructing a full-resolution
+        sparse grid that is immediately compacted by the interleaver.
+        """
+        model = self._base_model()
+        return self.args.backend == "fvdb" and model.__class__.__name__ == "OACNNsInterleaved"
+
+    def _prepare_model_input(self, input_tensor):
+        if self._can_use_dense_model_entry():
+            return input_tensor
+        return to_sparse(input_tensor, self.args.backend)
+
     def train(self):
         self.mode = 'train'
         for epoch in range(self.start_epoch, self.args.nEpochs+1):
@@ -128,7 +145,7 @@ class Runner:
                 print("Empty input, skipping batch")
                 continue
 
-            input = to_sparse(input, self.args.backend)
+            input = self._prepare_model_input(input)
 
             requires_grad(input, False)
 
@@ -229,7 +246,7 @@ class Runner:
                 # Skip the first batch to avoid warmup time
                 continue
             computed = True
-            benchmark_input = to_sparse(input_tensor, self.args.backend)
+            benchmark_input = self._prepare_model_input(input_tensor)
             requires_grad(benchmark_input, False)
             metrics = {}
 
@@ -238,29 +255,45 @@ class Runner:
                 self.model, benchmark_input))
 
             # Benchmark interleaver/deinterleaver/shapecriptor and exclude from total time
-            if hasattr(self.model, 'interleaver'):
+            base_model = self._base_model()
+            if hasattr(base_model, 'interleaver'):
                 excluded_time = 0.
 
                 interleave_time = self._benchmark_time(
-                    self.model.interleaver, benchmark_input)
-                interleaved = self.model.interleaver(benchmark_input)
+                    base_model.interleaver, benchmark_input)
+                interleaved = base_model.interleaver(benchmark_input)
                 metrics['interleaver_time_mean'] = interleave_time["infer_time_mean"]
                 excluded_time += interleave_time["infer_time_mean"]
 
-                if hasattr(self.model, 'shapecriptor'):
+                if hasattr(base_model, 'forward_interleaved'):
+                    core_time = self._benchmark_time(
+                        base_model.forward_interleaved, interleaved)
+                    core_output = base_model.forward_interleaved(interleaved)
+                    metrics['sparse_core_time_mean'] = core_time["infer_time_mean"]
+                    excluded_time += core_time["infer_time_mean"]
+                elif hasattr(base_model, 'shapecriptor'):
                     shapecriptor_time = self._benchmark_time(
-                        self.model.shapecriptor, interleaved)
+                        base_model.shapecriptor, interleaved)
+                    core_output = base_model.shapecriptor(interleaved)
                     metrics['shapecriptor_time_mean'] = shapecriptor_time["infer_time_mean"]
                     excluded_time += shapecriptor_time["infer_time_mean"]
+                else:
+                    core_output = interleaved
 
-                if hasattr(self.model, 'deinterleaver'):
+                if hasattr(base_model, 'deinterleaver'):
+                    if hasattr(base_model, 'deinterleave_output'):
+                        output_shape = benchmark_input.shape if isinstance(benchmark_input, torch.Tensor) else None
+                        deinterleave_component = lambda core: base_model.deinterleave_output(
+                            core, output_shape=output_shape)
+                    else:
+                        deinterleave_component = base_model.deinterleaver
                     deinterleave_time = self._benchmark_time(
-                        self.model.deinterleaver, interleaved)
+                        deinterleave_component, core_output)
                     metrics['deinterleaver_time_mean'] = deinterleave_time["infer_time_mean"]
                     excluded_time += deinterleave_time["infer_time_mean"]
 
                 metrics.update({
-                    'infer_time_pure_mean': metrics['infer_time_mean'] - excluded_time
+                    'infer_time_pure_mean': metrics.get('sparse_core_time_mean', metrics['infer_time_mean'] - excluded_time)
                 })
 
             # Benchmark memory usage
@@ -371,11 +404,11 @@ class Runner:
                 print("Empty input, skipping batch")
                 continue
 
-            input = to_sparse(input, self.args.backend)
+            input = self._prepare_model_input(input)
 
             # The runner keeps the dense-to-backend conversion here so model
             # code can assume it receives the correct representation.
-            requires_grad(input, True)
+            requires_grad(input, False)
 
             try:
                 if self.args.amp:
@@ -413,9 +446,6 @@ class Runner:
             print(
                 f"Average batch time: {self.forward_times['total'] / self.forward_times['count']}")
 
-            # Required by Minkowski Engine
-            torch.cuda.empty_cache()
-
     @torch.no_grad()
     def validate_epoch(self, epoch):
         if not self.valid_data_loader:
@@ -432,7 +462,7 @@ class Runner:
                 print("Empty input, skipping batch")
                 continue
 
-            input = to_sparse(input, self.args.backend)
+            input = self._prepare_model_input(input)
 
             requires_grad(input, False)
 
