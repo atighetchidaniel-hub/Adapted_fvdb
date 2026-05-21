@@ -10,9 +10,6 @@ except Exception:
     fvdb = None
     fvnn = None
 
-from torch_geometric.nn.pool import voxel_grid
-from torch_geometric.utils import scatter
-
 from modules.interleaver import Deinterleaver, Interleaver
 from utils.tensor import FvdbTensor, to_sparse
 from utils.train import trunc_normal_
@@ -121,6 +118,16 @@ def _fvdb_batch_ids(grid) -> torch.Tensor:
 def _cluster_sum(src: torch.Tensor, cluster: torch.Tensor, num_clusters: int) -> torch.Tensor:
     out = src.new_zeros((num_clusters,) + tuple(src.shape[1:]))
     return out.index_add_(0, cluster, src)
+
+
+def _native_voxel_cluster(coord: torch.Tensor, batch: torch.Tensor, grid_size: int) -> torch.Tensor:
+    if coord.numel() == 0:
+        return torch.zeros((0,), device=coord.device, dtype=torch.long)
+
+    coarse = torch.div(coord.long(), int(grid_size), rounding_mode="floor")
+    coarse = coarse - coarse.amin(dim=0, keepdim=True)
+    dims = coarse.amax(dim=0) + 1
+    return (((batch * dims[0] + coarse[:, 0]) * dims[1] + coarse[:, 1]) * dims[2] + coarse[:, 2]).long()
 
 
 class FvdbPointwise(nn.Module):
@@ -295,18 +302,16 @@ class FvdbDownBlock(nn.Module):
         data = self.down_bn(x.data, x.grid)
         x = FvdbTensor(x.grid, _fvdb_jagged_like(x.grid, self.down_act(data.jdata)))
 
-        coord = x.grid.ijk.jdata.float()
+        coord = x.grid.ijk.jdata
         batch = _fvdb_batch_ids(x.grid)
         clusters = []
         for grid_size in self.point_grid_size:
-            # PyG voxel clustering groups active voxels into several spatial
-            # partitions, giving the OA block its omni-adaptive neighborhood
-            # references at multiple scales.
-            cluster = voxel_grid(pos=coord, size=grid_size, batch=batch)
-            _, cluster = torch.unique(cluster, return_inverse=True)
+            # Native integer clustering avoids PyG voxel_grid + unique while
+            # preserving the same coarse voxel grouping used by the OA block.
+            cluster = _native_voxel_cluster(coord, batch, grid_size)
             num_clusters = int(cluster.max().item()) + 1 if cluster.numel() > 0 else 0
             cluster_count = torch.bincount(cluster, minlength=num_clusters).to(
-                device=coord.device,
+                device=x.data.jdata.device,
                 dtype=x.data.jdata.dtype,
             ).clamp_min_(1).unsqueeze(1)
             clusters.append((cluster, cluster_count, num_clusters))
