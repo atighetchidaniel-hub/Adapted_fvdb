@@ -24,6 +24,9 @@ fvdb-only implementation of OA-CNNs adapted from the Pointcept-based sparse mode
 """
 
 
+_ACTIVE_FVDB_PLAN_CACHE = None
+
+
 def _point_batches_from_offset(offset: torch.Tensor, total_points: int) -> torch.Tensor:
     offset = offset.long()
     if offset.numel() == 0:
@@ -84,12 +87,23 @@ def _dict_to_fvdb(input_dict: dict) -> FvdbTensor:
 
 
 def _fvdb_plan(source_grid, target_grid, kernel_size, stride=1):
-    return fvdb.ConvolutionPlan.from_grid_batch(
+    global _ACTIVE_FVDB_PLAN_CACHE
+    key_kernel = tuple(kernel_size) if isinstance(kernel_size, (list, tuple)) else kernel_size
+    key = (id(source_grid), id(target_grid), key_kernel, stride)
+    if _ACTIVE_FVDB_PLAN_CACHE is not None:
+        plan = _ACTIVE_FVDB_PLAN_CACHE.get(key)
+        if plan is not None:
+            return plan
+
+    plan = fvdb.ConvolutionPlan.from_grid_batch(
         kernel_size=kernel_size,
         stride=stride,
         source_grid=source_grid,
         target_grid=target_grid,
     )
+    if _ACTIVE_FVDB_PLAN_CACHE is not None:
+        _ACTIVE_FVDB_PLAN_CACHE[key] = plan
+    return plan
 
 
 def _fvdb_jagged_like(grid, data: torch.Tensor):
@@ -102,6 +116,11 @@ def _fvdb_batch_ids(grid) -> torch.Tensor:
     # Expand grid-level offsets into one batch id per active voxel so PyG
     # clustering can operate on fvdb data sample-by-sample.
     return torch.arange(counts.numel(), device=offsets.device, dtype=torch.long).repeat_interleave(counts)
+
+
+def _cluster_sum(src: torch.Tensor, cluster: torch.Tensor, num_clusters: int) -> torch.Tensor:
+    out = src.new_zeros((num_clusters,) + tuple(src.shape[1:]))
+    return out.index_add_(0, cluster, src)
 
 
 class FvdbPointwise(nn.Module):
@@ -189,24 +208,37 @@ class FvdbBasicBlock(nn.Module):
     def forward(self, x: FvdbTensor, clusters):
         feat = x.data.jdata
         feats = []
-        for i, cluster in enumerate(clusters):
+        for i, cluster_info in enumerate(clusters):
+            if isinstance(cluster_info, tuple):
+                cluster, cluster_count, num_clusters = cluster_info
+            else:
+                cluster = cluster_info
+                num_clusters = int(cluster.max().item()) + 1 if cluster.numel() > 0 else 0
+                cluster_count = torch.bincount(cluster, minlength=num_clusters).to(
+                    device=feat.device,
+                    dtype=feat.dtype,
+                ).clamp_min_(1).unsqueeze(1)
+
             # Each cluster map represents one geometric neighborhood scale; the
             # block learns how much to aggregate from each scale per voxel.
             pw = self.l_w[i](feat)
-            pw = pw - scatter(pw, cluster, reduce="mean")[cluster]
+            cluster_mean = _cluster_sum(pw, cluster, num_clusters) / cluster_count
+            pw = pw - cluster_mean[cluster]
             pw = self.weight[i](pw)
             pw = torch.exp(pw - pw.max())
-            pw = pw / (scatter(pw, cluster, reduce="sum", dim=0)[cluster] + 1e-6)
-            pfeat = self.proj[i](feat) * pw
-            pfeat = scatter(pfeat, cluster, reduce="sum")[cluster]
+            denom = _cluster_sum(pw, cluster, num_clusters)
+            pfeat = self.proj[i](feat)
+            numerator = _cluster_sum(pfeat * pw, cluster, num_clusters)
+            pfeat = (numerator / (denom + 1e-6))[cluster]
             feats.append(pfeat)
 
         adp = self.adaptive(feat)
         adp = torch.softmax(adp, dim=1)
-        feats = torch.stack(feats, dim=1)
-        feats = torch.einsum("l n, l n c -> l c", adp, feats)
+        mixed_feats = feats[0] * adp[:, 0:1]
+        for j in range(1, len(feats)):
+            mixed_feats = torch.addcmul(mixed_feats, feats[j], adp[:, j:j + 1])
         feat = self.proj[-1](feat)
-        feat = torch.cat([feat, feats], dim=1)
+        feat = torch.cat([feat, mixed_feats], dim=1)
         feat = self.fuse(feat) + x.data.jdata
         residual = feat
         x = x.replace_data(feat)
@@ -272,7 +304,12 @@ class FvdbDownBlock(nn.Module):
             # references at multiple scales.
             cluster = voxel_grid(pos=coord, size=grid_size, batch=batch)
             _, cluster = torch.unique(cluster, return_inverse=True)
-            clusters.append(cluster)
+            num_clusters = int(cluster.max().item()) + 1 if cluster.numel() > 0 else 0
+            cluster_count = torch.bincount(cluster, minlength=num_clusters).to(
+                device=coord.device,
+                dtype=x.data.jdata.dtype,
+            ).clamp_min_(1).unsqueeze(1)
+            clusters.append((cluster, cluster_count, num_clusters))
         for block in self.blocks:
             x = block(x, clusters)
         return x
@@ -409,17 +446,30 @@ class _OACNNs(nn.Module):
         raise ValueError(f"Unsupported fvdb OACNN input type: {type(input)}")
 
     def forward(self, input, data: dict = {}):
-        x = self._prepare_input(input)
-        x = self.stem(x)
-        skips = [x]
-        for i in range(self.num_stages):
-            x = self.enc[i](x)
-            skips.append(x)
-        x = skips.pop(-1)
-        for i in reversed(range(self.num_stages)):
-            skip = skips.pop(-1)
-            x = self.dec[i](x, skip)
-        return self.final(x)
+        global _ACTIVE_FVDB_PLAN_CACHE
+        previous_plan_cache = _ACTIVE_FVDB_PLAN_CACHE
+        owns_plan_cache = previous_plan_cache is None
+        if owns_plan_cache:
+            # fVDB convolution plans depend on sparse topology, not feature
+            # values. Cache only during this forward pass so repeated blocks on
+            # the same grid avoid rebuilding identical same-grid plans.
+            _ACTIVE_FVDB_PLAN_CACHE = {}
+
+        try:
+            x = self._prepare_input(input)
+            x = self.stem(x)
+            skips = [x]
+            for i in range(self.num_stages):
+                x = self.enc[i](x)
+                skips.append(x)
+            x = skips.pop(-1)
+            for i in reversed(range(self.num_stages)):
+                skip = skips.pop(-1)
+                x = self.dec[i](x, skip)
+            return self.final(x)
+        finally:
+            if owns_plan_cache:
+                _ACTIVE_FVDB_PLAN_CACHE = previous_plan_cache
 
     @staticmethod
     def _init_weights(m):
