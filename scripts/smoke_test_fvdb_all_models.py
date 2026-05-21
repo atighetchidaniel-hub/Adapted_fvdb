@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import inspect
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -45,6 +46,13 @@ def model_input_for(name: str, x: torch.Tensor):
     return to_sparse(x, "fvdb")
 
 
+def call_model(model, model_input):
+    params = inspect.signature(model.forward).parameters
+    if len(params) >= 2:
+        return model(model_input, {})
+    return model(model_input)
+
+
 def run_one(name: str, args, x: torch.Tensor, target: torch.Tensor, train_step: bool):
     model_depth = args.oacnn_depth if name.startswith("OACNNs") else 3
     model_args = SimpleNamespace(interleaver_r=args.interleaver_r)
@@ -65,7 +73,7 @@ def run_one(name: str, args, x: torch.Tensor, target: torch.Tensor, train_step: 
         optimizer.zero_grad(set_to_none=True)
 
     model_input = model_input_for(name, x)
-    output = model(model_input, {})
+    output = call_model(model, model_input)
     dense = to_dense(output, target.shape)
     loss, metrics = criterion(output, target, {})
 
