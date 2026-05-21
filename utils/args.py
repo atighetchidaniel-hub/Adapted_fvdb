@@ -49,6 +49,8 @@ def get_train_arguments():
     parser.add_argument('--shapescribed_n', type=int, default=4)
     parser.add_argument('--use_dyt', action='store_true', default=False)
     parser.add_argument('--model_depth', type=int, default=3)
+    parser.add_argument('--dec_depth', type=int, default=None,
+                        help='Override OACNN decoder fuse depth; default keeps the original depth of 2.')
     # Loss arguments
     parser.add_argument('--loss', type=str, default='dice')
     parser.add_argument('--loss_weights', type=str, default='')
@@ -140,6 +142,8 @@ def get_inference_arguments():
         infer_args.use_dyt = False
     if "model_depth" not in infer_args:
         infer_args.model_depth = 3
+    if "dec_depth" not in infer_args:
+        infer_args.dec_depth = None
     if "cache_size" not in infer_args:
         infer_args.cache_size = 0
     if "max_pool_size" not in infer_args:

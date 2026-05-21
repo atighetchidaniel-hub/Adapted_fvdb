@@ -173,6 +173,7 @@ def parse_args():
     parser.add_argument("--model", default=None)
     parser.add_argument("--backend", default="fvdb")
     parser.add_argument("--model-depth", type=int, default=None)
+    parser.add_argument("--dec-depth", type=int, default=None)
     parser.add_argument("--interleaver-r", type=int, default=None)
     parser.add_argument("--in-channels", type=int, default=None)
     parser.add_argument("--classes", type=int, default=None)
@@ -198,6 +199,9 @@ def main():
 
     model_name = args.model or train_args.get("model", "OACNNsInterleaved")
     model_depth = args.model_depth or int(train_args.get("model_depth", 3))
+    dec_depth = args.dec_depth
+    if dec_depth is None and train_args.get("dec_depth") is not None:
+        dec_depth = int(train_args["dec_depth"])
     interleaver_r = args.interleaver_r or int(train_args.get("interleaver_r", 16))
     in_channels = args.in_channels or int(train_args.get("inChannels", 1))
     classes = args.classes or int(train_args.get("classes", 1))
@@ -205,7 +209,7 @@ def main():
 
     init_cuda(args.device.startswith("cuda"), cupy=False, seed=0, inference=True)
 
-    model_args = SimpleNamespace(interleaver_r=interleaver_r)
+    model_args = SimpleNamespace(interleaver_r=interleaver_r, dec_depth=dec_depth)
     model = init_model(
         model_name,
         "fvdb",
@@ -227,6 +231,7 @@ def main():
     print(f"frames:       {frame_count}/{len(dataset)}")
     print(f"threshold:    {args.threshold}")
     print(f"interleaver:  {interleaver_r}")
+    print(f"dec_depth:    {dec_depth if dec_depth is not None else 2}")
     print("")
 
     rows = []

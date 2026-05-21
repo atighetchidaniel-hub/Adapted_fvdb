@@ -334,18 +334,22 @@ class FvdbUpBlock(nn.Module):
     ):
         super().__init__()
         assert depth > 0
+        self.depth = depth
         self.down_ratio = down_ratio
         self.up = FvdbPointwise(in_channels, embed_channels, bias=False)
         self.up_bn = fvnn.BatchNorm(embed_channels, momentum=0.01)
         self.up_act = nn.LeakyReLU()
-        self.fuse = nn.Sequential(
-            nn.Linear(skip_channels + embed_channels, embed_channels),
-            norm_fn(embed_channels),
-            nn.LeakyReLU(),
-            nn.Linear(embed_channels, embed_channels),
-            norm_fn(embed_channels),
-            nn.LeakyReLU(),
-        )
+        fuse_layers = []
+        fuse_in_channels = skip_channels + embed_channels
+        for i in range(depth):
+            fuse_layers.extend(
+                [
+                    nn.Linear(fuse_in_channels if i == 0 else embed_channels, embed_channels),
+                    norm_fn(embed_channels),
+                    nn.LeakyReLU(),
+                ]
+            )
+        self.fuse = nn.Sequential(*fuse_layers)
 
     def forward(self, x: FvdbTensor, skip_x: FvdbTensor):
         x = self.up(x)
@@ -488,7 +492,7 @@ class _OACNNs(nn.Module):
 
 
 class OACNNs(_OACNNs):
-    def __init__(self, in_channels=1, classes=1, backend_type="fvdb", depth=3):
+    def __init__(self, in_channels=1, classes=1, backend_type="fvdb", depth=3, dec_depth=None):
         enc_num_ref = [16, 16, 16, 16]
         enc_channels = [64, 64, 128, 256]
         groups = [2, 4, 8, 16]
@@ -496,7 +500,7 @@ class OACNNs(_OACNNs):
         down_ratio = [2, 2, 2, 2]
         dec_channels = [96, 96, 128, 256]
         point_grid_size = [[16, 32, 64], [8, 16, 24], [4, 8, 12], [2, 4, 6]]
-        dec_depth = [2, 2, 2, 2]
+        dec_depth = [dec_depth if dec_depth is not None else 2] * 4
 
         enc_num_ref = enc_num_ref[:depth]
         enc_channels = enc_channels[:depth]
@@ -524,7 +528,7 @@ class OACNNs(_OACNNs):
 
 
 class OACNNsInterleaved(_OACNNs):
-    def __init__(self, in_channels=1, classes=1, r=2, backend_type="fvdb", depth=3):
+    def __init__(self, in_channels=1, classes=1, r=2, backend_type="fvdb", depth=3, dec_depth=None):
         self.r = r
         interleaved_in_channels = in_channels * (self.r ** 3)
         interleaved_classes = classes * (self.r ** 3)
@@ -536,7 +540,7 @@ class OACNNsInterleaved(_OACNNs):
         down_ratio = [2, 2, 2, 2]
         dec_channels = [96, 96, 128, 256]
         point_grid_size = [[16, 32, 64], [8, 16, 24], [4, 8, 12], [2, 4, 6]]
-        dec_depth = [2, 2, 2, 2]
+        dec_depth = [dec_depth if dec_depth is not None else 2] * 4
 
         enc_num_ref = enc_num_ref[:depth]
         enc_channels = enc_channels[:depth]
