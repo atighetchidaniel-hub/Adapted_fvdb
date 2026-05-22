@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="1320" viewBox="0 0 1120 1320">
+<rect x="0.00" y="0.00" width="1120.00" height="1320.00" fill="white" stroke="none" opacity="1.000" />
+<text x="40.00" y="42.00" font-size="22" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">False-Negative Rate By Scene and Configuration</text>
+<line x1="300.00" y1="75.00" x2="300.00" y2="1285.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="300.00" y="67.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0</text>
+<line x1="487.61" y1="75.00" x2="487.61" y2="1285.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="487.61" y="67.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0.05</text>
+<line x1="675.21" y1="75.00" x2="675.21" y2="1285.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="675.21" y="67.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0.1</text>
+<line x1="862.82" y1="75.00" x2="862.82" y2="1285.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="862.82" y="67.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0.15</text>
+<line x1="1050.42" y1="75.00" x2="1050.42" y2="1285.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="1050.42" y="67.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0.2</text>
+<text x="290.00" y="90.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d8 fvdb</text>
+<rect x="300.00" y="79.00" width="53.71" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="358.71" y="90.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.014</text>
+<text x="290.00" y="112.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d8 spconv</text>
+<rect x="300.00" y="101.00" width="50.48" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="355.48" y="112.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.013</text>
+<text x="290.00" y="134.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d16 fvdb</text>
+<rect x="300.00" y="123.00" width="48.06" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="353.06" y="134.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.013</text>
+<text x="290.00" y="156.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d16 spconv</text>
+<rect x="300.00" y="145.00" width="59.36" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="364.36" y="156.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.016</text>
+<text x="290.00" y="178.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d32 fvdb</text>
+<rect x="300.00" y="167.00" width="120.85" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="425.85" y="178.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.032</text>
+<text x="290.00" y="200.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r30 d32 spconv</text>
+<rect x="300.00" y="189.00" width="151.99" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="456.99" y="200.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.041</text>
+<text x="290.00" y="222.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r60 d8 fvdb</text>
+<rect x="300.00" y="211.00" width="166.59" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="471.59" y="222.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.044</text>
+<text x="290.00" y="244.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r60 d8 spconv</text>
+<rect x="300.00" y="233.00" width="125.17" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="430.17" y="244.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.033</text>
+<text x="290.00" y="266.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r60 d16 fvdb</text>
+<rect x="300.00" y="255.00" width="199.94" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="504.94" y="266.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.053</text>
+<text x="290.00" y="288.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r60 d16 spconv</text>
+<rect x="300.00" y="277.00" width="201.49" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="506.49" y="288.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.054</text>
+<text x="290.00" y="310.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">bigcity r60 d32 fvdb</text>
+<rect x="300.00" y="299.00" width="282.55" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="587.55" y="310.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.075</text>
+<text x="290.00" y="332.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d8 fvdb</text>
+<rect x="300.00" y="321.00" width="29.89" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="334.89" y="332.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.008</text>
+<text x="290.00" y="354.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d8 spconv</text>
+<rect x="300.00" y="343.00" width="35.90" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="340.90" y="354.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.010</text>
+<text x="290.00" y="376.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d16 fvdb</text>
+<rect x="300.00" y="365.00" width="43.12" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="348.12" y="376.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.011</text>
+<text x="290.00" y="398.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d16 spconv</text>
+<rect x="300.00" y="387.00" width="34.05" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="339.05" y="398.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.009</text>
+<text x="290.00" y="420.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d32 fvdb</text>
+<rect x="300.00" y="409.00" width="200.75" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="505.75" y="420.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.054</text>
+<text x="290.00" y="442.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r30 d32 spconv</text>
+<rect x="300.00" y="431.00" width="133.35" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="438.35" y="442.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.036</text>
+<text x="290.00" y="464.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r60 d8 fvdb</text>
+<rect x="300.00" y="453.00" width="77.73" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="382.73" y="464.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.021</text>
+<text x="290.00" y="486.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r60 d8 spconv</text>
+<rect x="300.00" y="475.00" width="37.63" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="342.63" y="486.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.010</text>
+<text x="290.00" y="508.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r60 d16 fvdb</text>
+<rect x="300.00" y="497.00" width="61.24" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="366.24" y="508.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.016</text>
+<text x="290.00" y="530.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r60 d16 spconv</text>
+<rect x="300.00" y="519.00" width="64.34" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="369.34" y="530.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.017</text>
+<text x="290.00" y="552.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">industrial r60 d32 fvdb</text>
+<rect x="300.00" y="541.00" width="272.82" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="577.82" y="552.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.073</text>
+<text x="290.00" y="574.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d8 fvdb</text>
+<rect x="300.00" y="563.00" width="146.17" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="451.17" y="574.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.039</text>
+<text x="290.00" y="596.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d8 spconv</text>
+<rect x="300.00" y="585.00" width="155.01" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="460.01" y="596.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.041</text>
+<text x="290.00" y="618.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d16 fvdb</text>
+<rect x="300.00" y="607.00" width="123.65" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="428.65" y="618.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.033</text>
+<text x="290.00" y="640.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d16 spconv</text>
+<rect x="300.00" y="629.00" width="105.21" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="410.21" y="640.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.028</text>
+<text x="290.00" y="662.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d32 fvdb</text>
+<rect x="300.00" y="651.00" width="296.90" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="601.90" y="662.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.079</text>
+<text x="290.00" y="684.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r30 d32 spconv</text>
+<rect x="300.00" y="673.00" width="218.35" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="523.35" y="684.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.058</text>
+<text x="290.00" y="706.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r60 d8 fvdb</text>
+<rect x="300.00" y="695.00" width="283.92" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="588.92" y="706.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.076</text>
+<text x="290.00" y="728.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r60 d8 spconv</text>
+<rect x="300.00" y="717.00" width="155.58" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="460.58" y="728.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.041</text>
+<text x="290.00" y="750.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r60 d16 fvdb</text>
+<rect x="300.00" y="739.00" width="354.02" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="659.02" y="750.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.094</text>
+<text x="290.00" y="772.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r60 d16 spconv</text>
+<rect x="300.00" y="761.00" width="321.88" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="626.88" y="772.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.086</text>
+<text x="290.00" y="794.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">robotlab r60 d32 fvdb</text>
+<rect x="300.00" y="783.00" width="413.09" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="718.09" y="794.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.110</text>
+<text x="290.00" y="816.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d8 fvdb</text>
+<rect x="300.00" y="805.00" width="49.52" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="354.52" y="816.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.013</text>
+<text x="290.00" y="838.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d8 spconv</text>
+<rect x="300.00" y="827.00" width="58.48" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="363.48" y="838.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.016</text>
+<text x="290.00" y="860.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d16 fvdb</text>
+<rect x="300.00" y="849.00" width="61.44" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="366.44" y="860.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.016</text>
+<text x="290.00" y="882.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d16 spconv</text>
+<rect x="300.00" y="871.00" width="123.58" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="428.58" y="882.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.033</text>
+<text x="290.00" y="904.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d32 fvdb</text>
+<rect x="300.00" y="893.00" width="286.39" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="591.39" y="904.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.076</text>
+<text x="290.00" y="926.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r30 d32 spconv</text>
+<rect x="300.00" y="915.00" width="239.94" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="544.94" y="926.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.064</text>
+<text x="290.00" y="948.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r60 d8 fvdb</text>
+<rect x="300.00" y="937.00" width="140.07" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="445.07" y="948.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.037</text>
+<text x="290.00" y="970.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r60 d8 spconv</text>
+<rect x="300.00" y="959.00" width="77.85" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="382.85" y="970.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.021</text>
+<text x="290.00" y="992.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r60 d16 fvdb</text>
+<rect x="300.00" y="981.00" width="234.68" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="539.68" y="992.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.063</text>
+<text x="290.00" y="1014.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r60 d16 spconv</text>
+<rect x="300.00" y="1003.00" width="348.93" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="653.93" y="1014.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.093</text>
+<text x="290.00" y="1036.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">sponza r60 d32 fvdb</text>
+<rect x="300.00" y="1025.00" width="501.52" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="806.52" y="1036.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.134</text>
+<text x="290.00" y="1058.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d8 fvdb</text>
+<rect x="300.00" y="1047.00" width="302.41" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="607.41" y="1058.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.081</text>
+<text x="290.00" y="1080.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d8 spconv</text>
+<rect x="300.00" y="1069.00" width="338.57" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="643.57" y="1080.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.090</text>
+<text x="290.00" y="1102.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d16 fvdb</text>
+<rect x="300.00" y="1091.00" width="82.70" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="387.70" y="1102.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.022</text>
+<text x="290.00" y="1124.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d16 spconv</text>
+<rect x="300.00" y="1113.00" width="74.50" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="379.50" y="1124.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.020</text>
+<text x="290.00" y="1146.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d32 fvdb</text>
+<rect x="300.00" y="1135.00" width="259.87" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="564.87" y="1146.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.069</text>
+<text x="290.00" y="1168.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r30 d32 spconv</text>
+<rect x="300.00" y="1157.00" width="170.75" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="475.75" y="1168.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.046</text>
+<text x="290.00" y="1190.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r60 d8 fvdb</text>
+<rect x="300.00" y="1179.00" width="642.86" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="947.86" y="1190.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.171</text>
+<text x="290.00" y="1212.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r60 d8 spconv</text>
+<rect x="300.00" y="1201.00" width="304.24" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="609.24" y="1212.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.081</text>
+<text x="290.00" y="1234.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r60 d16 fvdb</text>
+<rect x="300.00" y="1223.00" width="289.29" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="594.29" y="1234.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.077</text>
+<text x="290.00" y="1256.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r60 d16 spconv</text>
+<rect x="300.00" y="1245.00" width="242.94" height="13.00" fill="#F59E0B" stroke="none" opacity="0.850" />
+<text x="547.94" y="1256.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.065</text>
+<text x="290.00" y="1278.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">viking r60 d32 fvdb</text>
+<rect x="300.00" y="1267.00" width="404.26" height="13.00" fill="#2563EB" stroke="none" opacity="0.850" />
+<text x="709.26" y="1278.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">0.108</text>
+</svg>

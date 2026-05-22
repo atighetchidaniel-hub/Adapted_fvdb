@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="650" viewBox="0 0 980 650">
+<rect x="0.00" y="0.00" width="980.00" height="650.00" fill="white" stroke="none" opacity="1.000" />
+<text x="40.00" y="42.00" font-size="22" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">Speed vs False-Negative Rate</text>
+<line x1="90.00" y1="85.00" x2="90.00" y2="550.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="90.00" y="570.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">0</text>
+<line x1="413.51" y1="85.00" x2="413.51" y2="550.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="413.51" y="570.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">20</text>
+<line x1="737.03" y1="85.00" x2="737.03" y2="550.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="737.03" y="570.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">40</text>
+<line x1="1060.54" y1="85.00" x2="1060.54" y2="550.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="1060.54" y="570.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#6B7280">60</text>
+<line x1="90.00" y1="550.00" x2="890.00" y2="550.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="82.00" y="554.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0</text>
+<line x1="90.00" y1="432.00" x2="890.00" y2="432.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="82.00" y="436.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.05</text>
+<line x1="90.00" y1="314.00" x2="890.00" y2="314.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="82.00" y="318.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.1</text>
+<line x1="90.00" y1="196.00" x2="890.00" y2="196.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="82.00" y="200.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.15</text>
+<line x1="90.00" y1="78.00" x2="890.00" y2="78.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="82.00" y="82.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.2</text>
+<line x1="90.00" y1="550.00" x2="890.00" y2="550.00" stroke="#111827" stroke-width="0.90" />
+<line x1="90.00" y1="85.00" x2="90.00" y2="550.00" stroke="#111827" stroke-width="0.90" />
+<text x="490.00" y="602.00" font-size="12" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#111827">Inference time (ms)</text>
+<text x="24.00" y="317.50" font-size="12" font-family="Arial, sans-serif" font-weight="400" text-anchor="middle" fill="#111827" transform="rotate(-90 24.00 317.50)">FN rate</text>
+<circle cx="607.63" cy="516.21" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="582.06" cy="531.20" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="594.88" cy="458.06" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="667.57" cy="518.85" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="601.94" cy="359.79" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="369.03" cy="518.25" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="362.83" cy="527.42" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="366.79" cy="452.50" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="371.69" cy="513.22" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="368.38" cy="337.04" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="650.16" cy="519.77" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="597.63" cy="522.88" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="647.81" cy="472.23" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="735.56" cy="511.36" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="647.66" cy="497.98" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="377.18" cy="512.67" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="373.38" cy="528.58" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="374.87" cy="483.82" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="392.40" cy="472.27" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="377.51" cy="503.14" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="688.09" cy="473.99" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="633.91" cy="423.73" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="701.86" cy="363.25" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="817.27" cy="369.87" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="693.14" cy="386.54" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="470.86" cy="454.40" r="9.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="461.30" cy="466.12" r="9.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="466.78" cy="412.66" r="9.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="475.04" cy="399.08" r="9.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="468.10" cy="442.60" r="9.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="607.76" cy="445.22" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="575.36" cy="501.11" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="596.61" cy="371.42" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="671.03" cy="461.90" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="596.85" cy="145.65" r="5.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="368.35" cy="471.27" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="365.13" cy="526.33" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="367.63" cy="452.14" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="376.05" cy="501.03" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="365.49" cy="358.64" r="5.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="650.57" cy="424.24" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="594.74" cy="511.48" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="651.67" cy="327.33" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="739.58" cy="402.39" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="652.55" cy="368.04" r="7.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="376.32" cy="423.26" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="367.17" cy="509.53" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="376.79" cy="347.54" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="392.83" cy="330.53" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="377.16" cy="397.20" r="7.00" fill="#F59E0B" stroke="white" stroke-width="1.20" />
+<circle cx="704.76" cy="372.28" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="634.43" cy="378.40" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="704.30" cy="290.17" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="813.59" cy="234.55" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<circle cx="691.14" cy="295.73" r="9.00" fill="#2563EB" stroke="white" stroke-width="1.20" />
+<rect x="705.00" y="92.00" width="160.00" height="84.00" fill="white" stroke="#E5E7EB" opacity="0.950" />
+<circle cx="724.00" cy="118.00" r="6.00" fill="#2563EB" stroke="white" stroke-width="1.00" />
+<text x="740.00" y="123.00" font-size="11" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">fvdb</text>
+<circle cx="724.00" cy="142.00" r="6.00" fill="#F59E0B" stroke="white" stroke-width="1.00" />
+<text x="740.00" y="147.00" font-size="11" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">spconv</text>
+<text x="724.00" y="170.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">circle size: d8/d16/d32</text>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980">
+<rect x="0.00" y="0.00" width="1500.00" height="980.00" fill="white" stroke="none" opacity="1.000" />
+<text x="40.00" y="42.00" font-size="22" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">Paired Backend Deltas</text>
+<text x="40.00" y="66.00" font-size="12" font-family="Arial, sans-serif" font-weight="400" text-anchor="start" fill="#6B7280">Delta = fVDB - spconv. Green favors fVDB; red favors spconv.</text>
+<text x="100.00" y="106.00" font-size="15" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">FN rate delta</text>
+<line x1="100.00" y1="225.00" x2="1440.00" y2="225.00" stroke="#111827" stroke-width="0.80" />
+<line x1="100.00" y1="330.00" x2="1440.00" y2="330.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="334.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-0.104</text>
+<line x1="100.00" y1="277.50" x2="1440.00" y2="277.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="281.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-0.052</text>
+<line x1="100.00" y1="225.00" x2="1440.00" y2="225.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="229.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0</text>
+<line x1="100.00" y1="172.50" x2="1440.00" y2="172.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="176.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.052</text>
+<line x1="100.00" y1="120.00" x2="1440.00" y2="120.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="124.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.104</text>
+<rect x="119.80" y="224.13" width="14.00" height="0.87" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="173.40" y="225.00" width="14.00" height="3.05" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="227.00" y="225.00" width="14.00" height="8.40" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="280.60" y="213.83" width="14.00" height="11.17" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="334.20" y="225.00" width="14.00" height="0.42" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="387.80" y="225.00" width="14.00" height="1.62" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="441.40" y="222.55" width="14.00" height="2.45" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="495.00" y="206.83" width="14.00" height="18.17" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="548.60" y="214.19" width="14.00" height="10.81" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="602.20" y="225.00" width="14.00" height="0.84" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="655.80" y="225.00" width="14.00" height="2.38" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="709.40" y="220.03" width="14.00" height="4.97" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="763.00" y="203.82" width="14.00" height="21.18" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="816.60" y="190.39" width="14.00" height="34.61" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="870.20" y="216.34" width="14.00" height="8.66" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="923.80" y="225.00" width="14.00" height="2.42" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="977.40" y="225.00" width="14.00" height="16.76" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1031.00" y="212.47" width="14.00" height="12.53" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1084.60" y="208.22" width="14.00" height="16.78" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1138.20" y="225.00" width="14.00" height="30.81" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1191.80" y="225.00" width="14.00" height="9.75" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1245.40" y="222.79" width="14.00" height="2.21" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1299.00" y="200.97" width="14.00" height="24.03" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1352.60" y="133.70" width="14.00" height="91.30" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1406.20" y="212.50" width="14.00" height="12.50" fill="#EF4444" stroke="none" opacity="0.900" />
+<text x="122.80" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 122.80 348.00)">bigcity r30 d8</text>
+<text x="283.60" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 283.60 348.00)">bigcity r60 d8</text>
+<text x="444.40" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 444.40 348.00)">industrial r30 d16</text>
+<text x="605.20" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 605.20 348.00)">industrial r60 d16</text>
+<text x="766.00" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 766.00 348.00)">robotlab r30 d32</text>
+<text x="926.80" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 926.80 348.00)">sponza r30 d8</text>
+<text x="1087.60" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1087.60 348.00)">sponza r60 d8</text>
+<text x="1248.40" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1248.40 348.00)">viking r30 d16</text>
+<text x="1409.20" y="348.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1409.20 348.00)">viking r60 d16</text>
+<text x="100.00" y="416.00" font-size="15" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">FP rate delta</text>
+<line x1="100.00" y1="535.00" x2="1440.00" y2="535.00" stroke="#111827" stroke-width="0.80" />
+<line x1="100.00" y1="640.00" x2="1440.00" y2="640.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="644.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-0.007</text>
+<line x1="100.00" y1="587.50" x2="1440.00" y2="587.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="591.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-0.004</text>
+<line x1="100.00" y1="535.00" x2="1440.00" y2="535.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="539.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0</text>
+<line x1="100.00" y1="482.50" x2="1440.00" y2="482.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="486.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.004</text>
+<line x1="100.00" y1="430.00" x2="1440.00" y2="430.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="434.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0.007</text>
+<rect x="119.80" y="498.77" width="14.00" height="36.23" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="173.40" y="496.48" width="14.00" height="38.52" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="227.00" y="518.22" width="14.00" height="16.78" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="280.60" y="535.00" width="14.00" height="0.77" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="334.20" y="525.29" width="14.00" height="9.71" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="387.80" y="521.99" width="14.00" height="13.01" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="441.40" y="535.00" width="14.00" height="0.09" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="495.00" y="535.00" width="14.00" height="2.91" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="548.60" y="535.00" width="14.00" height="6.92" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="602.20" y="532.19" width="14.00" height="2.81" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="655.80" y="521.28" width="14.00" height="13.72" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="709.40" y="530.63" width="14.00" height="4.37" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="763.00" y="535.00" width="14.00" height="0.40" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="816.60" y="535.00" width="14.00" height="13.89" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="870.20" y="534.01" width="14.00" height="0.99" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="923.80" y="443.70" width="14.00" height="91.30" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="977.40" y="482.85" width="14.00" height="52.15" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1031.00" y="523.06" width="14.00" height="11.94" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1084.60" y="535.00" width="14.00" height="21.83" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1138.20" y="497.98" width="14.00" height="37.02" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1191.80" y="492.83" width="14.00" height="42.17" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1245.40" y="530.78" width="14.00" height="4.22" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1299.00" y="535.00" width="14.00" height="4.30" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1352.60" y="535.00" width="14.00" height="16.75" fill="#10B981" stroke="none" opacity="0.900" />
+<rect x="1406.20" y="535.00" width="14.00" height="1.03" fill="#10B981" stroke="none" opacity="0.900" />
+<text x="122.80" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 122.80 658.00)">bigcity r30 d8</text>
+<text x="283.60" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 283.60 658.00)">bigcity r60 d8</text>
+<text x="444.40" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 444.40 658.00)">industrial r30 d16</text>
+<text x="605.20" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 605.20 658.00)">industrial r60 d16</text>
+<text x="766.00" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 766.00 658.00)">robotlab r30 d32</text>
+<text x="926.80" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 926.80 658.00)">sponza r30 d8</text>
+<text x="1087.60" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1087.60 658.00)">sponza r60 d8</text>
+<text x="1248.40" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1248.40 658.00)">viking r30 d16</text>
+<text x="1409.20" y="658.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1409.20 658.00)">viking r60 d16</text>
+<text x="100.00" y="726.00" font-size="15" font-family="Arial, sans-serif" font-weight="700" text-anchor="start" fill="#111827">Inference time delta (ms)</text>
+<line x1="100.00" y1="815.00" x2="1440.00" y2="815.00" stroke="#111827" stroke-width="0.80" />
+<line x1="100.00" y1="890.00" x2="1440.00" y2="890.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="894.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-25</text>
+<line x1="100.00" y1="852.50" x2="1440.00" y2="852.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="856.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">-12</text>
+<line x1="100.00" y1="815.00" x2="1440.00" y2="815.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="819.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">0</text>
+<line x1="100.00" y1="777.50" x2="1440.00" y2="777.50" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="781.50" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">12</text>
+<line x1="100.00" y1="740.00" x2="1440.00" y2="740.00" stroke="#E5E7EB" stroke-width="0.70" />
+<text x="92.00" y="744.00" font-size="10" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280">25</text>
+<rect x="119.80" y="770.13" width="14.00" height="44.87" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="173.40" y="763.66" width="14.00" height="51.34" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="227.00" y="774.14" width="14.00" height="40.86" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="280.60" y="769.97" width="14.00" height="45.03" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="334.20" y="763.42" width="14.00" height="51.58" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="387.80" y="773.77" width="14.00" height="41.23" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="441.40" y="772.82" width="14.00" height="42.18" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="495.00" y="782.54" width="14.00" height="32.46" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="548.60" y="775.46" width="14.00" height="39.54" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="602.20" y="772.20" width="14.00" height="42.80" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="655.80" y="772.10" width="14.00" height="42.90" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="709.40" y="763.67" width="14.00" height="51.33" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="763.00" y="770.79" width="14.00" height="44.21" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="816.60" y="771.94" width="14.00" height="43.06" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="870.20" y="763.30" width="14.00" height="51.70" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="923.80" y="759.35" width="14.00" height="55.65" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="977.40" y="750.46" width="14.00" height="64.54" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1031.00" y="750.63" width="14.00" height="64.37" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1084.60" y="759.52" width="14.00" height="55.48" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1138.20" y="749.78" width="14.00" height="65.22" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1191.80" y="771.07" width="14.00" height="43.93" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1245.40" y="764.19" width="14.00" height="50.81" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1299.00" y="772.68" width="14.00" height="42.32" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1352.60" y="771.49" width="14.00" height="43.51" fill="#EF4444" stroke="none" opacity="0.900" />
+<rect x="1406.20" y="763.21" width="14.00" height="51.79" fill="#EF4444" stroke="none" opacity="0.900" />
+<text x="122.80" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 122.80 908.00)">bigcity r30 d8</text>
+<text x="283.60" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 283.60 908.00)">bigcity r60 d8</text>
+<text x="444.40" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 444.40 908.00)">industrial r30 d16</text>
+<text x="605.20" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 605.20 908.00)">industrial r60 d16</text>
+<text x="766.00" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 766.00 908.00)">robotlab r30 d32</text>
+<text x="926.80" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 926.80 908.00)">sponza r30 d8</text>
+<text x="1087.60" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1087.60 908.00)">sponza r60 d8</text>
+<text x="1248.40" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1248.40 908.00)">viking r30 d16</text>
+<text x="1409.20" y="908.00" font-size="9" font-family="Arial, sans-serif" font-weight="400" text-anchor="end" fill="#6B7280" transform="rotate(-60 1409.20 908.00)">viking r60 d16</text>
+</svg>
