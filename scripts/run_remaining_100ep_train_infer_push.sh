@@ -132,6 +132,24 @@ push_artifacts() {
 
   cd "$REPO_ROOT"
 
+  if ! git remote get-url "$GIT_REMOTE" >/dev/null 2>&1; then
+    if git remote get-url origin >/dev/null 2>&1; then
+      GIT_REMOTE="origin"
+    elif git remote get-url backendopt >/dev/null 2>&1; then
+      GIT_REMOTE="backendopt"
+    else
+      echo "ERROR: no usable git remote found for upload." >&2
+      exit 1
+    fi
+  fi
+
+  if ! git config user.email >/dev/null; then
+    git config user.email "${USER:-auto}@$(hostname 2>/dev/null || echo linux)"
+  fi
+  if ! git config user.name >/dev/null; then
+    git config user.name "${USER:-auto}"
+  fi
+
   git add "$ARTIFACT_DIR"
 
   if git diff --cached --quiet -- "$ARTIFACT_DIR"; then
@@ -140,7 +158,33 @@ push_artifacts() {
   fi
 
   git commit -m "Add complete 100ep final inference artifacts ${STAMP}"
-  git push "$GIT_REMOTE" "$GIT_BRANCH"
+
+  if git push "$GIT_REMOTE" "$GIT_BRANCH"; then
+    log_status "Uploaded artifacts to $GIT_REMOTE/$GIT_BRANCH."
+    return
+  fi
+
+  log_status "Main push failed. Trying rebase + retry."
+  if git pull --rebase --autostash "$GIT_REMOTE" "$GIT_BRANCH" && git push "$GIT_REMOTE" "$GIT_BRANCH"; then
+    log_status "Uploaded artifacts to $GIT_REMOTE/$GIT_BRANCH after rebase."
+    return
+  fi
+
+  log_status "Main push still failed. Trying fallback branch upload."
+  local safe_artifact
+  local fallback_branch
+  safe_artifact="$(echo "$ARTIFACT_DIR" | tr '/ ' '__')"
+  fallback_branch="auto-upload-${safe_artifact}-${STAMP}"
+
+  if git push "$GIT_REMOTE" "HEAD:refs/heads/$fallback_branch"; then
+    log_status "Uploaded artifacts to fallback branch: $GIT_REMOTE/$fallback_branch"
+    return
+  fi
+
+  local bundle="$TRAIN_ROOT/summaries/git_upload_failed_${STAMP}.bundle"
+  git bundle create "$bundle" HEAD
+  log_status "ERROR: GitHub upload failed. Local git bundle written to: $bundle"
+  exit 1
 }
 
 require_path "$CONDA_SH" "conda activation script"
