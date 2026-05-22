@@ -43,7 +43,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def newest_summary_csv(root: Path) -> Path:
-    candidates = sorted((root / "summaries").glob("final_all_inference_*ep_*.csv"), key=lambda p: p.stat().st_mtime)
+    candidates = [
+        path
+        for path in (root / "summaries").glob("final_all_inference_*ep_*.csv")
+        if "_compact" not in path.stem
+    ]
+    candidates = sorted(candidates, key=lambda p: p.stat().st_mtime)
     if not candidates:
         raise FileNotFoundError(f"No final_all_inference CSV found under {root / 'summaries'}")
     return candidates[-1]
@@ -345,7 +350,14 @@ def main() -> None:
     out_md = args.out or csv_path.with_name(csv_path.stem + "_nice_summary.md")
     out_csv = args.csv_out or csv_path.with_name(csv_path.stem + "_compact.csv")
 
-    rows = sorted(enrich_rows(load_rows(csv_path)), key=sort_key)
+    raw_rows = load_rows(csv_path)
+    if raw_rows and "metrics_output_dir" not in raw_rows[0]:
+        raise SystemExit(
+            f"{csv_path} looks like a compact/generated CSV, not the original final_all_inference CSV. "
+            "Use the original CSV without '_compact' in the filename."
+        )
+
+    rows = sorted(enrich_rows(raw_rows), key=sort_key)
     compact = [compact_record(row) for row in rows]
     write_compact_csv(out_csv, compact)
 
