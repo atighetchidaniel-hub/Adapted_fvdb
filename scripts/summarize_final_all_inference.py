@@ -81,6 +81,82 @@ def load_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def mean(values: list[float]) -> float:
+    clean = [value for value in values if not math.isnan(value)]
+    return sum(clean) / len(clean) if clean else math.nan
+
+
+def eval_log_frame_count(output_dir: Path) -> int:
+    path = output_dir / "eval_log.csv"
+    if not path.exists():
+        return 0
+    with path.open(newline="") as f:
+        return sum(1 for _ in csv.DictReader(f))
+
+
+def parse_eval_stats(output_dir: Path) -> dict[str, float | int]:
+    """Read either repo stats format or per-frame eval format from an output dir."""
+    result: dict[str, float | int] = {}
+    stats_path = output_dir / "eval_stats.csv"
+    if not stats_path.exists():
+        return result
+
+    with stats_path.open(newline="") as f:
+        rows = list(csv.DictReader(f))
+    if not rows:
+        return result
+
+    # Current repo format:
+    #   Metric,Mean,Std,Min,Max
+    #   dice,0.98,...
+    if {"Metric", "Mean"}.issubset(rows[0].keys()):
+        for stat_row in rows:
+            metric = stat_row.get("Metric", "")
+            if not metric:
+                continue
+            try:
+                result[f"{metric}_mean"] = float(stat_row.get("Mean", "nan"))
+            except Exception:
+                result[f"{metric}_mean"] = math.nan
+            try:
+                result[f"{metric}_std"] = float(stat_row.get("Std", "nan"))
+            except Exception:
+                result[f"{metric}_std"] = math.nan
+        frames = eval_log_frame_count(output_dir)
+        if frames:
+            result["frames"] = frames
+        return result
+
+    # Older/per-frame format: rows contain dice/loss/fp/... directly.
+    metric_keys = ["dice", "loss", "fp", "fn", "fp_rate", "fn_rate", "fp_ratio", "gv_ratio"]
+    result["frames"] = len(rows)
+    for key in metric_keys:
+        vals = []
+        for stat_row in rows:
+            try:
+                vals.append(float(stat_row[key]))
+            except Exception:
+                pass
+        if vals:
+            result[f"{key}_mean"] = mean(vals)
+            result[f"{key}_std"] = math.nan
+    return result
+
+
+def enrich_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    enriched = []
+    for row in rows:
+        updated = dict(row)
+        output_dir = Path(row.get("metrics_output_dir", ""))
+        if output_dir.exists():
+            recovered = parse_eval_stats(output_dir)
+            for key, value in recovered.items():
+                if key == "frames" or math.isnan(as_float(updated, key)):
+                    updated[key] = str(value)
+        enriched.append(updated)
+    return enriched
+
+
 def compact_record(row: dict[str, str]) -> dict[str, str]:
     return {
         "scene": row["scene"],
@@ -187,7 +263,7 @@ def make_pair_table(rows: list[dict[str, str]]) -> list[str]:
                 fmt(fv_fn - sp_fn),
                 fmt(fv_time - sp_time, 3),
                 fmt(time_drop, 2),
-                "fVDB" if fv_fn < sp_fn else "spconv",
+                "fVDB" if not math.isnan(fv_fn) and fv_fn < sp_fn else "spconv",
                 "fVDB" if fv_time < sp_time else "spconv",
             ]
         )
@@ -225,11 +301,11 @@ def make_averages_table(rows: list[dict[str, str]]) -> list[str]:
                 f"d{d}",
                 backend,
                 str(len(items)),
-                fmt(sum(as_float(r, "dice_mean") for r in items) / len(items)),
-                fmt(sum(as_float(r, "fp_rate_mean") for r in items) / len(items)),
-                fmt(sum(as_float(r, "fn_rate_mean") for r in items) / len(items)),
-                fmt_ms(sum(as_float(r, "infer_time_mean") for r in items) / len(items)),
-                fmt_ms(sum(as_float(r, "infer_time_pure_mean") for r in items) / len(items)),
+                fmt(mean([as_float(r, "dice_mean") for r in items])),
+                fmt(mean([as_float(r, "fp_rate_mean") for r in items])),
+                fmt(mean([as_float(r, "fn_rate_mean") for r in items])),
+                fmt_ms(mean([as_float(r, "infer_time_mean") for r in items])),
+                fmt_ms(mean([as_float(r, "infer_time_pure_mean") for r in items])),
             ]
         )
 
@@ -269,7 +345,7 @@ def main() -> None:
     out_md = args.out or csv_path.with_name(csv_path.stem + "_nice_summary.md")
     out_csv = args.csv_out or csv_path.with_name(csv_path.stem + "_compact.csv")
 
-    rows = sorted(load_rows(csv_path), key=sort_key)
+    rows = sorted(enrich_rows(load_rows(csv_path)), key=sort_key)
     compact = [compact_record(row) for row in rows]
     write_compact_csv(out_csv, compact)
 

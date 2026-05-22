@@ -416,6 +416,31 @@ def load_eval_stats(output_dir):
         return result
 
     rows = list(csv.DictReader(path.open(newline="")))
+
+    # Current logger writes aggregate stats:
+    #   Metric,Mean,Std,Min,Max
+    # not one row per frame. Recover frame count from eval_log.csv.
+    if rows and {"Metric", "Mean"}.issubset(rows[0].keys()):
+        eval_log = Path(output_dir) / "eval_log.csv"
+        if eval_log.exists():
+            result["frames"] = sum(1 for _ in csv.DictReader(eval_log.open(newline="")))
+        for row in rows:
+            metric = row.get("Metric", "")
+            if not metric:
+                continue
+            try:
+                result[f"{metric}_mean"] = float(row.get("Mean", "nan"))
+            except Exception:
+                result[f"{metric}_mean"] = math.nan
+            try:
+                result[f"{metric}_std"] = float(row.get("Std", "nan"))
+            except Exception:
+                result[f"{metric}_std"] = math.nan
+        for key in metric_keys:
+            result.setdefault(f"{key}_mean", math.nan)
+            result.setdefault(f"{key}_std", math.nan)
+        return result
+
     result["frames"] = len(rows)
     for key in metric_keys:
         vals = []
