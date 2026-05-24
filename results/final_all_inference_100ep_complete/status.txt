@@ -1,0 +1,28 @@
+============================================================
+REMAINING 100EP TRAIN + FINAL INFER + PUSH
+============================================================
+TRAIN_ROOT=/var/tmp/atighedl_runs/NEURALPVS_MAY19_SYNTHETIC_100EP
+FINAL_RESULT_ROOT=/var/tmp/atighedl_runs/final_all_inference_complete_100ep
+SOURCE_ROOT=/home/atighedl/May9_lunch_1000framescodexparamters/SceneGeneration
+CANONICAL_ROOT=/var/tmp/atighedl_runs/canonical_data/FINAL_GVPVV
+FVDB_TRAIN_REPO=/home/atighedl/Adapted_fvdb
+FVDB_INFER_REPO=/var/tmp/atighedl_repos/Adapted_fvdb_BACKENDOPTIMIZATION
+SPCONV_REPO=/home/atighedl/neuralpvs
+REMAINING_RUN_SPECS=r60:32 r90:16 r90:8 r90:32
+EPOCHS=100 BATCH=3 DEPTH=3 THRESHOLD=3000
+N_FRAMES=0 RUN_TIMING=1
+ARTIFACT_DIR=results/final_all_inference_100ep_complete
+PUSH_TO_GITHUB=1 remote=origin branch=main
+status_file=/var/tmp/atighedl_runs/NEURALPVS_MAY19_SYNTHETIC_100EP/summaries/remaining_100ep_train_infer_push_20260522_204141_status.txt
+
+Step 1/4: train remaining model configs.
+
+Step 2/4: run clean final all-scene inference for all completed configs.
+summary_csv=/var/tmp/atighedl_runs/final_all_inference_complete_100ep/summaries/final_all_inference_100ep_20260523_221807.csv
+
+Step 3/4: generate nice summary and SVG plots.
+nice_md=/var/tmp/atighedl_runs/final_all_inference_complete_100ep/summaries/final_all_inference_100ep_20260523_221807_nice_summary.md
+compact_csv=/var/tmp/atighedl_runs/final_all_inference_complete_100ep/summaries/final_all_inference_100ep_20260523_221807_compact.csv
+plots_dir=/var/tmp/atighedl_runs/final_all_inference_complete_100ep/summaries/plots_final_all_inference_100ep_20260523_221807
+
+Step 4/4: copy lightweight artifacts into repo and push.
