@@ -141,9 +141,17 @@ prepare_falcor_source_root() {
     require_path "$src/gv" "Falcor $radius gv folder"
     require_path "$src/pvv" "Falcor $radius pvv folder"
 
-    mkdir -p "$dst"
-    ln -s "$src/gv" "$dst/gv"
-    ln -s "$src/pvv" "$dst/pvv"
+    # The shared May19 training helper expects files directly under gv/ and pvv/.
+    # Falcor exports may have an extra nesting level, so flatten them with symlinks.
+    mkdir -p "$dst/gv" "$dst/pvv"
+
+    while IFS= read -r -d '' file; do
+      ln -s "$file" "$dst/gv/$(basename "$file")"
+    done < <(find -L "$src/gv" -type f -name '*_gv.bin.gz' -print0)
+
+    while IFS= read -r -d '' file; do
+      ln -s "$file" "$dst/pvv/$(basename "$file")"
+    done < <(find -L "$src/pvv" -type f -name '*_pvv.bin.gz' -print0)
 
     local gv_count
     local pvv_count

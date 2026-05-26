@@ -89,7 +89,7 @@ make_filtered_dataset() {
   rm -rf "$dst"
   mkdir -p "$dst/gv" "$dst/pvv"
 
-  python - <<PY
+  if ! python - <<PY
 from pathlib import Path
 import os
 import sys
@@ -116,6 +116,9 @@ print(f"Filtered {src.name}: {len(pairs)} valid pairs", file=sys.stderr, flush=T
 if len(pairs) < 10:
     raise SystemExit(f"Too few valid pairs for {src}")
 PY
+  then
+    return 1
+  fi
 
   echo "$ds"
 }
@@ -223,7 +226,10 @@ for spec in $RUN_SPECS; do
   d="${spec##*:}"
 
   if [ -z "${DATASET_CACHE[$radius]+x}" ]; then
-    dataset="$(make_filtered_dataset "$radius")"
+    if ! dataset="$(make_filtered_dataset "$radius")"; then
+      echo "ERROR: failed to create filtered dataset for $radius" | tee -a "$MASTER_LOG" >&2
+      exit 1
+    fi
     DATASET_CACHE[$radius]="$dataset"
 
     {
